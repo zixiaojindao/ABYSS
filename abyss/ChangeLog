@@ -1,0 +1,956 @@
+2012-05-30  Shaun Jackman  <sjackman@bcgsc.ca>
+
+	* Release version 1.3.4.
+	* Do not extend paths, which can cause misassemblies.
+	* Increase the default value of m from 30 to 50.
+	* Various portability fixes.
+
+	abyss-pe:
+	* Increase the default value of m from 30 to 50 to reduce the
+	likelihood of misassemblies.
+	* Integrate with SLURM. Thanks to Timothy Carlson.
+
+	ABYSS:
+	* Use CityHash64 rather than Bob Jenkins' hashlittle.
+
+	SimpleGraph:
+	* Do not extend paths. Closes #8. Extending paths can cause
+	misassemblies when the de Bruijn graph is incomplete.
+
+	MergePaths:
+	* Bug fix. Closes #6. Fix the bug causing the error:
+	Assertion `!m_ambig' failed.
+
+	abyss-fatoagp:
+	* New script. Create a FASTA file of scaftigs and an AGP file.
+
+2012-03-13  Shaun Jackman  <sjackman@bcgsc.ca>
+
+	* Release version 1.3.3.
+	* New parameter, l. Specify the minimum alignment length when
+	aligning the reads to the contigs.
+	* Improve the scaffolding algorithm that identifies repeats.
+	* Improve the documentation.
+
+	abyss-pe:
+	* New parameter, l. Specify the minimum alignment length when
+	aligning the reads to the contigs. This option may be specified
+	per library. The default value is k.
+	* New parameter, S. Specify the minimum contig size required for
+	building scaffolds.
+	* New parameter, N. Specify the minimum number of pairs required
+	for building scaffolds.
+	* Integrate with Load Sharing Facility (LSF).
+	* Calculate the assembly contiguity statistics.
+
+	KAligner, abyss-map:
+	* Rename the minimum alignment length option -k to -l.
+
+	DistanceEst:
+	* Dual licensed under the GPL and BCCA-Academic licenses.
+	* New options, --fr and --rf. Specify the orientation of the
+	library. The default behaviour is to detect the orientation.
+	* New options, --mind and --maxd. Specify the minimum and maximum
+	distances for the maximum likelihood estimator.
+	* New option, -l, --min-align. Specify the minimum alignment
+	length of the aligner, which can improve distance estimates.
+	* Increase the default minimum mapping quality, -q, to 10, was 1.
+
+	MergePaths:
+	* Bug fix. Fix the bug causing the error:
+	Assertion `count(it2+1, path2.end(), pivot) == 0' failed.
+
+	PathConsensus:
+	* Bug fix. Fix the bug causing the error:
+	Assertion `fstSol.size() == sndSol.size()' failed.
+
+	MergeContigs:
+	* Calculate the assembly contiguity statistics.
+
+	abyss-scaffold:
+	* Improve the algorithm that identifies repeats.
+	* Remove simple cycles from the scaffold graph.
+	* Calculate the assembly contiguity statistics.
+	* The option -s may specify a range, such as -s200-10000,
+	to find the value of s that maximizes the scaffold N50.
+
+	abyss-fac:
+	* New option, -m, --mmd. Output MultiMarkdown format.
+
+	abyss-index:
+	* New option, -a, --alphabet. Specify the alphabet.
+	* New option, --bwt. Output the Burrows-Wheeler transform.
+
+	abyss-samtoafg:
+	* New script. Convert a SAM file to an AMOS AFG file.
+
+	README, README.html, abyss-pe.1:
+	* Improve the documentation.
+
+2011-12-13  Shaun Jackman  <sjackman@bcgsc.ca>
+
+	* Release version 1.3.2.
+	* Enable scaffolding by default.
+	* Remove small shim contigs.
+	* Improved distance estimates.
+	* Reduce sequence duplication.
+	* Read compressed files on Mac OS X.
+
+	abyss-pe:
+	* Enable scaffolding by default. If the mp parameter is not
+	specified, use a default value of ${pe} or ${lib}.
+	* Support using bowtie2 to align reads to contigs by specifying
+	aligner=bowtie2.
+	* The default aligner is abyss-map.
+	* Output the scaffold overlap graph, ${name}-scaffolds.dot.
+	* Set DYLD_FORCE_FLAT_NAMESPACE to read compressed files on OS X.
+
+	ABYSS:
+	* Can read k-mer count data from a Jellyfish file with extension
+	.jf for k-mer counts or .jfq for q-mer counts. Jellyfish must be
+	installed.
+	* Bug fix. Fix the bug causing the error
+	bool chomp(std::string&, char): Assertion `s.length() > 1' failed.
+
+	abyss-filtergraph:
+	* New program. Remove small shim contigs that add no useful
+	sequence to the assembly. Thanks to Tony Raymond (tgr).
+
+	PopBubbles:
+	* New option, -a, --branches. Specify the maximum number of
+	branches of a bubble that may be popped. Default is 2.
+	* Use DIALIGN-TX for multiple sequence alignment. Thanks to tgr.
+
+	DistanceEst:
+	* Improved distance estimates.
+
+	abyss-joindist:
+	* Remove this program. Use abyss-todot instead.
+
+	MergePaths:
+	* Use a non-greedy algorithm that reduces sequence duplication but
+	may reduce contiguity. The greedy algorithm may be used by
+	specifying the option --greedy.
+
+	abyss-fixmate:
+	* Do not output query names by default.
+
+	configure:
+	* New option, --enable-samseqqual. Enable SAM sequence and quality
+	fields.
+
+2011-10-24  Shaun Jackman  <sjackman@bcgsc.ca>
+
+	* Release version 1.3.1.
+	* Read sequence files in SRA format. The tool fastq-dump from the
+	sratoolkit must be installed.
+	* Read a contig overlap graph in the ASQG format of SGA.
+	* Fix compile errors for Mac OS X.
+	* Fix the bug that caused the line number of an error in a FASTQ
+	file to be reported incorrectly.
+
+	abyss-pe:
+	* Support using BWA-SW to align reads to contigs by specifying
+	aligner=bwasw.
+	* The parameter ALIGNER_OPTIONS may be used to specify a different
+	value for k when aligning using abyss-map.
+	* New target, bam, may be used to produce a final BAM file of the
+	reads aligned to the scaffolds.
+
+	KAligner:
+	* Fix the bug causing the error:
+	Assertion `qstep >= 0 && qstep <= m_hashSize' failed.
+
+	abyss-scaffold:
+	* The result is independent of the order in which the mate-pair
+	libraries are specified.
+	* Permit scaffolding contigs that have non-numeric identifiers.
+	* The overlap graph is optional.
+
+	abyss-todot:
+	* Convert adj, dist or ASQG formatted graph files to dot format.
+	* Merge multiple graph files into one.
+
+2011-09-09  Shaun Jackman  <sjackman@bcgsc.ca>
+
+	* Release version 1.3.0.
+	* Use mate-pair libraries to scaffold contigs.
+	* Support CASAVA-formatted FASTQ files.
+	* Bug fix. Do not trim quality 41 bases from the ends of reads.
+	* Boost C++ Libraries are required to compile ABySS.
+
+	abyss-pe:
+	* New parameter, mp, to specify the mate-pair libraries to be used
+	for scaffolding.
+	* Increase the default value for s from 100 to 200.
+	* Set the default value for n to 10.
+	* Integrate with PBS.
+
+	abyss-scaffold:
+	* New program. Scaffold using mate-pair libraries.
+
+	DistanceEst:
+	* Ignore multimapped alignments with a mapping quality of zero.
+	* New option, -q, --min-mapq. Ignore alignments with mapping
+	quality less than this threshold. Default is 1.
+	* Do not use OpenMP 3.0.
+
+	PopBubbles:
+	* Scaffold over complex bubbles with the option --scaffold.
+	Disabled by default.
+
+	MergePaths:
+	* Fix a bug that causes PathOverlap to die with the error:
+	Distance get(edge_bundle_t, const Graph&, ContigNode, ContigNode):
+	Assertion `e.second' failed.
+	* New option, --no-greedy. Use a non-greedy algorithm that reduces
+	sequence duplication but reduces contiguity. Disabled by default.
+
+	KAligner:
+	* Performance improvements. Thanks to Tony Raymond (tgr).
+	* The output is printed in the same order as the input when
+	multithreaded. (tgr)
+
+	abyss-map:
+	* New program. Use the BWT and FM-index to find the longest common
+	substring. To use it, specify the option aligner=map to abyss-pe.
+
+	abyss-index:
+	* New program. Build a FM-index of a FASTA file.
+
+	abyss-bowtie:
+	* Use abyss-tofastq --interleave to speed up abyss-fixmate.
+
+	abyss-bwa:
+	* Use bwa index -a bwtsw by default.
+	* Use abyss-tofastq --interleave to speed up abyss-fixmate.
+
+	abyss-fac:
+	* Report N80, N50 and N20. Do not report median and mean.
+	* Increase the default minimum contig size threshold, option -t,
+	from 100 to 200.
+
+	abyss-fixmate:
+	* Set the mapping quality of both alignments to the minimum
+	mapping quality of the pair of alignments.
+
+	abyss-tofastq:
+	* New option, -i, --interleave. Interleave the files.
+
+	configure:
+	* New option, --with-boost. Specify the path for Boost.
+	* New option, --disable-popcnt. Do not use the popcnt instruction.
+
+2011-04-15  Shaun Jackman  <sjackman@bcgsc.ca>
+
+	* Release version 1.2.7.
+
+	abyss-pe:
+	* Support using bwa or bowtie to align reads to contigs.
+	Specify aligner=bwa or aligner=bowtie.
+	* Integrate with IBM LoadLeveler.
+
+	PopBubbles:
+	* Use an affine gap penalty.
+	* The default maximum bubble length is 10 kbp.
+	* New option, --scaffold. Scaffold over bubbles with insufficient
+	sequence identity to be popped.
+
+	SimpleGraph:
+	* New parameter d to specify the acceptable error of a distance
+	estimate. The default is 6 bp.
+
+	PathConsensus:
+	* Use an affine gap penalty.
+
+	MergePaths:
+	* Fix a bug that causes PathOverlap to die with the error:
+	Distance get(edge_bundle_t, const Graph&, ContigNode, ContigNode):
+	Assertion `e.second' failed.
+
+2011-02-07  Shaun Jackman  <sjackman@bcgsc.ca>
+
+	* Release version 1.2.6.
+	* Find contigs that overlap by fewer than k-1 bp.
+	* Pop bubbles with sufficient sequence identity.
+	* Merge paths that overlap unambiguously.
+
+	abyss-pe:
+	* New parameter, m, the minimum number of overlapping bases.
+	The default is 30.
+	* The minimum sequence identity parameter, p, applies to both
+	PopBubbles and PathConsensus.
+
+	ABYSS:
+	* Support values of k larger than 96. The maximum value of k is
+	set when compiling using `configure --enable-maxk´.
+
+	AdjList:
+	* Find sequences that overlap by fewer than k-1 bp. The parameter
+	m specifies the minimum number of overlapping bases.
+
+	PopBubbles:
+	* Align both branches of the bubble and pop bubbles whose sequence
+	identity is sufficient, at least 90% by default.
+	* New parameter, p, the minimum identity required.
+	* The maximum bubble size is unlimited by default. This limit can
+	be changed using the parameter b.
+
+	SimpleGraph:
+	* Extend each path as long as is unambiguously possible.
+
+	PathOverlap:
+	* Merge paths that overlap unambiguously.
+
+	MergeContigs:
+	* Perform an alignment of the two sequences when no simple overlap
+	is found.
+
+	abyss-fac:
+	* New option, -g. Specify the expected genome size.
+
+2010-11-15  Shaun Jackman  <sjackman@bcgsc.ca>
+
+	* Release version 1.2.5.
+
+	AdjList:
+	* Fix the colour-space-specific bug causing the error
+	Assertion `seq.length() > (unsigned)opt::overlap' failed.
+
+	PathConsensus:
+	* Fix the bug causing the error
+	Assertion `fstSol.size() == 1' failed.
+
+	abyss-fixmate:
+	* Do not output the @RG header record at the end of the output
+	that gives the median fragment size. It breaks `samtools view -S`.
+	* --no-qname: New option. Set the qname to *.
+
+2010-10-13  Shaun Jackman  <sjackman@bcgsc.ca>
+
+	* Release version 1.2.4.
+
+	ABYSS-P:
+	* Fix the bug causing the error
+	Unexpected sequence extension message.
+
+	KAligner:
+	* Reduce the amount of memory used by KAligner.
+
+	PathConsensus:
+	* New program. Replace gaps of Ns that span a region of ambiguous
+	sequence with a consensus sequence of the possible sequences that
+	fill the gap. By default a minimum 90% identity is required. This
+	default can be changed with the parameter, p. The consensus
+	sequence uses IUPAC-IUB ambiguity codes. DIALIGN-TX is used for
+	the multiple sequence alignment.
+
+	PathOverlap:
+	* Fix the bug causing the error
+	Assertion `back(paths, u) == front(paths, v)' failed.
+
+2010-09-08  Shaun Jackman  <sjackman@bcgsc.ca>
+
+	* Release version 1.2.3.
+
+	ABYSS-P:
+	* Bug fix. Fix the bug causing the error
+	Assertion `m_comm.receiveEmpty()' failed.
+
+	PopBubbles:
+	* Bug fix. Fix the bug causing the error
+	error: unexpected ID
+
+	PathOverlap:
+	* Include the single-end contigs in the overlap graph.
+
+	abyss-pe:
+	* Output an overlap graph of the paired-end assembly in the file
+	${name}-contigs.dot.
+	* Do not create the intermediate file ${name}-4.fa.
+
+	abyss-adjtodot:
+	* Convert an overlap graph in adj format to Graphviz dot format or
+	SAM alignment format.
+
+2010-08-25  Shaun Jackman  <sjackman@bcgsc.ca>
+
+	* Release version 1.2.2.
+	* Merge contigs after popping bubbles.
+	* Handle multi-line FASTA sequences.
+	* Report the amount of memory used.
+	* Most tools can output their results in SAM format, including
+	AdjList, KAligner, ParseAligns and PathOverlap.
+
+	abyss-pe:
+	* New command, se-dot. Output a Graphviz dot file of the
+	single-end assembly.
+
+	ABYSS:
+	* Handle multi-line FASTA sequences.
+	* Report the amount of memory used.
+	* Improve error messages for incorrectly-formatted FASTA files.
+	* Bug fix. Improved handling of palindromes.
+
+	PopBubbles:
+	* Merge contigs after popping bubbles.
+	* Bug fix. Do not pop bubbles resulting from palindromes.
+
+	KAligner:
+	* Report the amount of memory used.
+	* New option, --sam. Output the alignments in SAM format.
+
+	ParseAligns, DistanceEst:
+	* Bug fix. The CIGAR string was oriented with respect to the
+	query rather than with respect to the target, which is standard.
+
+	AdjList, PathOverlap:
+	* New option, --sam. Output the adjacency graph in SAM format.
+
+	abyss-fixmate:
+	* New program. Similar to samtools fixmate, but does not require
+	that the input be sorted by query ID, although it is faster if it
+	is sorted.
+
+2010-07-12  Shaun Jackman  <sjackman@bcgsc.ca>
+
+	* Release version 1.2.1.
+	* Handle reverse-forward oriented mate pair libraries.
+	* Improved distance estimates, particularly with large fragment
+	libraries.
+
+	abyss-pe:
+	* New commands:
+	se-contigs: Assemble single-end contigs.
+	pe-contigs: Assemble paired-end contigs (default).
+	se-sam: Output a gzipped SAM file of the single-end assembly.
+	se-bam: Ouptut a BAM file of the single-end assembly.
+	pe-dot: Output a Graphviz dot file of the paired-end assembly.
+	all: Sam as se-bam pe-contigs pe-dot.
+	* Options for one particular library may be specified:
+	lib='lib1 lib2' lib2_s=1000 lib2_n=25
+	* Input sequence may come from an arbitrary command, which is
+	useful to assemble a region of an aligned BAM file:
+	in='<(samtools view genome.bam chr10)'
+
+	ABYSS:
+	* Bug fix. When reading SAM/BAM files, the quality format
+	incorrectly defaulted to ASCII-64, when it should be ASCII-33.
+
+	ABYSS-P:
+	* May use the Intel MPI library.
+
+	ParseAligns:
+	* Count the number of forward-reverse, reverse-forward and
+	forward-forward oriented alignments.
+
+	DistanceEst:
+	* Handle reverse-forward oriented mate pair libraries.
+	* Improved distance estimates, particularly with large fragment
+	libraries.
+	* Remove duplicate mate pairs.
+	* Print a pretty UTF-8 bar plot of the fragment-size distribution.
+	* Multithreaded using OpenMP. The -j, --threads option specifies
+	the number of threads to use.
+	* Performance improvment.
+
+	Overlap:
+	* Handle cases when more than one gap occurs within the mate pair
+	fragment size.
+
+	SimpleGraph:
+	* Performance improvment.
+
+	MergePaths:
+	* Handle the case when a circular sequence is assmembled into a
+	single contig.
+
+	abyss-tofastq:
+	* New program. Convert qseq, export, SAM and BAM files to FASTA or
+	FASTQ format. The files may be compressed with gz, bz2 or xz and
+	may be tarred.
+
+2010-05-25  Shaun Jackman  <sjackman@bcgsc.ca>
+
+	* Release version 1.2.0.
+	* Scaffold over gaps in coverage and unresolved repetitive
+	sequence using Ns.
+	* Read sequence from SAM and BAM files.
+
+	abyss-pe:
+	* Set q=3 by default. Trim bases from the ends of reads whose
+	quality is less than 3.
+	* Do not store the .pair.gz file.
+	* Generate a BAM file of the mate pairs that align to
+	different contigs of the single-end assembly. Disabled by default.
+	* Output a Graphviz dot file of the paired-end assembly.
+	Disabled by default.
+	* Store the bubbles in ${name}-bubbles.fa rather than bubbles.fa.
+	* Store the indel bubbles in ${name}-indel.fa.
+	* Bug fix for mawk.
+
+	ABYSS:
+	* Set -E0 when coverage is low (<2).
+
+	ABYSS-P:
+	* Remove the temporary files contigs-*.fa and snp-*.fa.
+
+	PopBubbles:
+	* Output in Graphviz dot format using --dot.
+
+	KAligner:
+	* Do not ignore sequences (reads or contigs) containing N.
+	* Output SAM headers (but not SAM alignments).
+
+	ParseAligns:
+	* Output in SAM format.
+
+	DistanceEst:
+	* Input in SAM format.
+	* Output in Graphviz dot format using --dot.
+
+	Overlap:
+	* Scaffold over gaps in coverage. Scaffolding can be disabled
+	using the option --no-scaffold.
+	* Merge contigs that overlap at simple repeats. These merges can
+	be prevented using the option --no-merge-repeat.
+
+	SimpleGraph:
+	* Scaffold over repeats. Scaffolding can be disabled using the
+	option --no-scaffold.
+
+	MergePaths:
+	* Merge paths containing ambiguous sequence.
+	* Multithreaded using OpenMP. The -j, --threads option specifies
+	the number of threads to use.
+
+	MergeContigs:
+	* Merge paths and contigs containing ambiguous sequence.
+
+	PathOverlap:
+	* Output in Graphviz dot format using --dot.
+
+	Consensus:
+	* Output the pileup in samtools format.
+
+2010-02-15  Shaun Jackman  <sjackman@bcgsc.ca>
+
+	* Release version 1.1.2.
+
+	ABYSS:
+	* Read tar files including compressed tar files.
+	* New parameter -b, --bubble-length=N. Pop bubbles shorter than
+	N bp. The default is b=3*k.
+
+	AdjList:
+	* Include the contig coverage in the output.
+	* The script abyss-adjtodot converts an ABySS adjacency file to
+	GraphViz dot format.
+
+	PopBubbles:
+	* Pop bubbles resulting from indels.
+
+	KAligner:
+	* Synchronize the threads periodically (every ten thousand
+	alignments by default) to ease the computational burden on
+	ParseAligns. This synchronization can be disabled using --sync=0.
+	* Use two threads by default.
+
+	abyss-pe:
+	* New parameter, b.
+	* Use two threads by default.
+	* The read length argument, l, is deprecated. To emulate the
+	behaviour of ABySS 1.0.14 and older, set t=6*(l-k+1). The default
+	is t=k.
+
+2010-01-19  Shaun Jackman  <sjackman@bcgsc.ca>
+
+	* Release version 1.1.1.
+
+	ABYSS:
+	* Pop complex bubbles either completely or not at all. Bubble
+	popping now completes in a single round.
+	* Choose better (typically lower) default values for the
+	parameters -e,--erode and -c,--coverage. The default threshold is
+	the square root of the median k-mer coverage.
+
+2009-12-18  Shaun Jackman  <sjackman@bcgsc.ca>
+
+	* Release version 1.1.0.
+	* The output format of AdjList, DistanceEst and SimpleGraph has
+	changed to be more humanly readable.
+
+	ABYSS:
+	* New options, -q, --trim-quality. Trim bases from the ends of
+	reads whose quality is less than the specified threshold.
+	--standard-quality: zero quality is `!' (33)
+	default for FASTQ files
+	--illumina-quality: zero quality is `@' (64)
+	default for qseq and export files
+	Thanks to Tony Raymond.
+
+	SimpleGraph:
+	* Multithreaded. The -j, --threads option specifies the number of
+	threads to use.
+	* Expand tandem repeats when it is possible to determine the exact
+	number of the repeat.
+
+	MergePaths:
+	* Bug fix. A repeat that is larger than the fragment size could
+	be misassembled. Thanks to Tony Raymond.
+
+	abyss-pe:
+	* Determine the parameter j (number of threads) by finding the
+	number of slots allocated on the head node in the PE_HOSTFILE.
+	* Store the k-mer coverage histogram in coverage.hist.
+
+2009-11-13  Shaun Jackman  <sjackman@bcgsc.ca>
+
+	* Release version 1.0.16.
+	* Improve the performance and memory usage of KAligner and
+	AdjList, particularly for very large data sets.
+
+	KAligner:
+	* Improve memory usage when maxk is 32 or 96. No change when maxk
+	is the default 64.
+	* New option, -i, --ignore-multimap. Ignore any duplicate k-mer in
+	the target sequence. Thanks to Tony Raymond.
+
+	AdjList:
+	* Improve performance for very large data sets.
+
+	ParseAligns:
+	* For reads whose ID begins with `SRR', expect that the forward
+	and reverse read have identical ID and no suffix, such as
+	/1 and /2.
+
+2009-10-19  Shaun Jackman  <sjackman@bcgsc.ca>
+
+	* Release version 1.0.15.
+
+	ABYSS:
+	* New options, -e, --erode and -E, --erode-strand.
+	The parameter e erodes bases at the ends of blunt contigs with
+	coverage less than the specified threshold.
+	The parameter E erodes bases at the ends of blunt contigs with
+	coverage less than the specified threshold on either strand.
+	* New feature. If the parameters e and c are not specified,
+	attempt to choose appropriate values based on the observed k-mer
+	coverage. This feature will work best for higher coverage data.
+	For lower coverage data, setting e=c=2 is reasonable.
+	* New option, --trim-masked. Removed masked (lower case) sequence
+	at the beginning and end of the read. Disable with
+	--no-trim-masked.
+	* The read length, l, is an optional parameter. If the read length
+	is specified, the trim parameter, t, will default to 6*(l-k+1), as
+	before. If the read length is not specified, t will be set to the
+	same value as k. For longer reads or when k is less than 85% of l,
+	it should not be necessary to specify l. The parameter t may be
+	specified directly if desired.
+
+	DistanceEst:
+	* Bug fix. The standard deviation could be calculated incorrectly
+	for larger numbers, particularly for libraries with large fragment
+	sizes. Thanks to Tony Raymond.
+
+	Overlap:
+	* Bug fix. If Overlap found mate pairs on the same contig with
+	incorrect orientation, it would generate a misassembled contig.
+	These misassembled contigs are easily identified in the
+	xxx-3-overlap.fa file. The two contigs IDs, in the fourth and
+	fifth column, will be identical.
+	* New option, --mask-repeat. If two contigs are joined by mate
+	pairs and are found to overlap by a simple repeat so that the
+	exact number of the repeat is unknown, join the contigs estimating
+	the number of the repeat, and mask (lower case) the repeat
+	sequence. This feature is disabled by default.
+
+	abyss-pe:
+	* Use gunzip -c rather than zcat for portability.
+
+	configure:
+	* New option, --enable-mpich. Use the MPICH2 MPI library.
+
+2009-09-08  Shaun Jackman  <sjackman@bcgsc.ca>
+
+	* Release version 1.0.14.
+	* Read files compressed with xzip (.xz) and compress (.Z).
+
+	abyss-pe:
+	* Assemble multiple libraries with different fragment sizes.
+	* New manual page.
+
+	ABYSS:
+	* Don't necessarily discard reads that contain an N. Keep those
+	k-mer that do not contain an N.
+
+	ABYSS-P:
+	* Serially renumber the contigs output by ABYSS-P using awk.
+
+2009-08-26  Shaun Jackman  <sjackman@bcgsc.ca>
+
+	* Release version 1.0.13.
+	* Read files compressed with gzip (.gz) or bzip2 (.bz2).
+
+	ABYSS-P:
+	* Bug fix. Fix a race condition in the erosion algorithm.
+
+2009-08-18  Shaun Jackman  <sjackman@bcgsc.ca>
+
+	* Release version 1.0.12.
+
+	abyss-pe:
+	* Both ABYSS and KAligner are run only once per assembly, which
+	speeds up the paired-end assembly by nearly a factor of two.
+	* The k-mer coverage information is correct in every contig file.
+	* A new parameter, cs, converts colour-space contigs to nucleotide
+	contigs using Consensus.
+	* A new parameter, ABYSS_OPTIONS, may be used to disable chastity
+	filtering by specifying ABYSS_OPTIONS=--no-chastity.
+
+	ABYSS:
+	* Read files in export format, which is similar to qseq format.
+	* Discard reads that failed the chastity filter. Use the
+	--no-chastity option to retain these unchaste reads. Chastity
+	filtering affects only qseq- and export formatted-files.
+	* Remove low-coverage contigs within ABYSS rather than filtering
+	using awk and reassembling.
+	* Support big-endian architecture machines.
+
+	KAligner:
+	* A new option, -m or --multimap, specifies that a duplicate k-mer
+	may be seen in the target sequence. By default, every k-mer in the
+	target sequence must be unique.
+	* A new option, --seq, prints the read sequence of each alignment.
+
+	Overlap:
+	* A new option, --scaffold, fills the gap between two blunt
+	contigs with Ns. This feature is disabled by default.
+
+	Consensus:
+	* Call the consensus sequence for each contig based on the
+	alignment of reads to contigs.
+	* Convert colour-space contigs to nucleotide contigs.
+	* Written by Tony Raymond.
+
+2009-07-21  Shaun Jackman  <sjackman@bcgsc.ca>
+
+	* Release version 1.0.11.
+	* Assemble colour-space reads. Read identifiers must be named with
+	the suffixes F3 and R3.
+	* Read files in qseq format. Thanks to Tony Raymond (tgr).
+	* Prevent misassemblies mediated by tandem segmental duplications.
+	A sequence XRRY, where R is a repeat sequence, could have been
+	misassembled as XRY. (tgr)
+
+	abyss-pe:
+	* Integrate with Sun Grid Engine (SGE). A parallel, paired-end
+	assembly can be run with a single qsub command. The parameters
+	lib, np and k default to the qsub environment variables JOB_NAME
+	(qsub -N), NSLOTS (qsub -pe) and SGE_TASK_ID (qsub -t)
+	respectively.
+	* The .pair file, the largest intermediate file, is now gzipped.
+
+	ABYSS-P:
+	* Bug fix. At k=19, k-mer would be distributed to even-numbered
+	processes only.
+
+	KAligner:
+	* Multithreaded. The -j, --threads option specifies the number of
+	threads to use. The order in which the alignments are output will
+	vary from run to run, but the alignments are deterministic and
+	will not vary. Each thread reads and aligns one file, so the reads
+	must be in more than one file to use this feature. (tgr)
+
+2009-06-18  Shaun Jackman  <sjackman@bcgsc.ca>
+
+	* Release version 1.0.10.
+
+	abyss-pe:
+	* Start an MPI ABySS assembly if the np option is specified.
+
+	ABYSS:
+	* For a non-parallel assembly, allocate more hash buckets to allow
+	for large single-machine jobs.
+	* Print the hash load during the loading process.
+
+	KAligner:
+	* Output the IDs of reads that do not align.
+	* Print a progress report of the number of reads aligned.
+
+	ParseAligns:
+	* To reduce memory usage, do not track reads that did not align.
+	KAligner and ParseAligns should now be able to handle any number
+	of reads in a single run.
+
+	MergePaths:
+	* Number paired-end contigs so that their IDs do not overlap with
+	the single-end contigs. If a single-end contig is not used in a
+	paired-end contig, its ID will not change.
+	* Merge overlapping paired-end contigs that were previously
+	being missed in some situations.
+
+	configure:
+	* Print a warning if Google sparsehash was not found.
+
+2009-05-15  Shaun Jackman  <sjackman@bcgsc.ca>
+
+	* Release version 1.0.9.
+
+	abyss-pe:
+	* Allow multiple input files specified by the parameter `in'.
+	* Support reading FASTA or FASTQ file formats.
+
+	KAligner:
+	* Support using Google sparsehash to reduce memory usage.
+	Google sparsehash does not provide a multimap, so KAligner built
+	using Google sparsehash cannot handle a duplicate k-mer in the
+	reference sequence. It will print an error message and die if a
+	duplicate k-mer is encountered. If Google sparsehash is not used,
+	the standard STL multimap will be used which does permit duplicate
+	k-mer.
+	* Support reading the query sequence from standard input.
+
+	ParseAligns:
+	* Significantly reduce memory usage if the mate reads are
+	encountered one after the next in the same file.
+
+2009-04-02  Shaun Jackman  <sjackman@bcgsc.ca>
+
+	* Release version 1.0.8.
+	* Bug fix. Fix the undefined behaviour causing the error
+	Assertion `marked == split' failed.
+
+2009-03-31  Shaun Jackman  <sjackman@bcgsc.ca>
+
+	* Release version 1.0.7.
+	* Use a mark-and-sweep trimming algorithm to remove errors at the
+	ends of blunt contigs.
+	* The parallel (ABYSS-P) trimming algorithm is now deterministic;
+	it will produce the same result every time. In addition, the
+	result of the parallel trimming algorithm is identical to the
+	result of the non-parallel trimming algorithm.
+	* Start trimming branches at length 1, previously 2.
+	* Bug fix in ABYSS-P. Repeat sequences of k-1 bases could
+	potentially be misassembled. Use a mark-and-sweep algorithm to
+	split ambiguous edges before contig generation. The previous
+	algorithm was not deterministic.
+	* Reduce memory usage by 200 MB by removing the MPI transmit
+	buffer.
+	* Bug fix in ABYSS-P. Fix an additional race condition in the
+	erosion algorithm.
+
+2009-03-24  Shaun Jackman  <sjackman@bcgsc.ca>
+
+	* Release version 1.0.6.
+	* Bug fix. Fix a race condition in the erosion algorithm.
+	* For the parallel program (ABYSS-P), after bubble popping perform
+	as many trimming rounds as necessary to remove all the tips, as
+	the non-parallel program does.
+	* New script, abyss2afg, to create an AMOS AFG assembly.
+
+2009-03-11  Shaun Jackman  <sjackman@bcgsc.ca>
+
+	* Release version 1.0.5.
+	* Portability fixes. Tested with g++ 4.3.3.
+
+2009-03-04  Shaun Jackman  <sjackman@bcgsc.ca>
+
+	* Release version 1.0.4.
+
+	ABYSS:
+	* Remove the need to specify a -e,--erode parameter by improving
+	the erosion algorithm to complete in a single pass.
+	* Remove the default limit on the maximum number of bubble
+	popping rounds. A limit may be specified using -b,--bubbles.
+	* Generate a warning if an input file is empty, but do not die.
+	* When using a Google sparsehash, allocate room for 100 million
+	k-mers.
+	* Increase the maximum FASTA line length from 64 kB to 256 kB.
+	* Require only one of either -l,--read-length or -t,--trim-length
+	to be specified.
+	* Allow read pairs to be named `_forward' and `_reverse'.
+	* Ensure that exactly k-1 bases of context is given on each side
+	of the bubble sequence. Previously, one side would have k bases of
+	context, and the other side would have k-1 bases.
+	* Add command line options to each of the paired-end programs.
+
+	ABYSS-P:
+	* Use Open MPI as the default MPI library.
+	* Do not link against the Open MPI C++ library.
+
+	abyss-pe:
+	* Use pipes where possible to avoid intermediate files.
+	* The semantics of the n argument have changed. See DistanceEst
+	-n,--npairs below.
+
+	SimpleGraph:
+	* If more than one path is found but only one meets all of the
+	constraints, use it.
+	* Allow for some constant error in distance estimates that does
+	not decrease with the number of samples. The expected fragment
+	size seems to vary with genomic coordinate to a certain degree.
+	So, the distribution of fragment size spanning two given contigs
+	may differ from the empirical distribution by a roughly constant
+	offset.
+
+	DistanceEst:
+	* The semantics of the -n,--npairs option has changed.
+	Require at least NPAIRS pairs between contigs (>= NPAIRS).
+	Previously, required strictly more than NPAIRS pairs between
+	contigs (> NPAIRS).
+	* Give the estimated error to a single decimal place.
+	* When counting the number of pairs that join two contigs, only
+	count pairs that fit the empirical distribution.
+	* When deciding whether the pairs joining two contigs are
+	inconsistent in sense, require NPAIRS read pairs joining two
+	contigs in each sense before considering the pair data to be
+	inconsistent.
+
+	ParseAligns:
+	* Measure fragments in total size, not alignment distance.
+	* Allow a read that spans two contigs to be used in distance
+	estimates.
+	* Add the -h,--hist option to produce a histogram.
+	* Bug fix. When measuring the empirical fragment size, ensure that
+	the sense of the alignments is correct. Output a negative fragment
+	size if the reverse read aligns ahead of the forward read.
+	* Bug fix. Miscalculated the fragment size estimate between two
+	contigs if they did not have the same sense and one contig
+	required flipping. It was possible to see one distance estimate
+	from contig A to contig B and a differing estimate from contig B
+	to contig A. Typically, the distance estimate would be off by
+	one.
+
+2009-01-23  Shaun Jackman  <sjackman@bcgsc.ca>
+
+	* Release version 1.0.3.
+	* Merge contigs that ended due to a lack of coverage, but which
+	are connected by paired-end reads and overlap unambiguously.
+	* Track the multiplicity the sense and antisense strand
+	separately. Erode the end of a blunt contig until it is
+	represented by both strands.
+	* Ignore the case of the nucleotide sequence of a FASTA file.
+	* Increase the maximum FASTA line length from 1 kB to 64 kB to
+	allow loading contigs.
+	* Output the path through the single-end contigs in the comment
+	field of the paired-end contig.
+	* In the paired-end driver script, abyss-pe,
+	Implement a coverage cutoff, c.
+	Pass the erosion parameter, e, to the single-end assembler.
+
+2008-11-21  Shaun Jackman  <sjackman@bcgsc.ca>
+
+	* Release version 1.0.2.
+	* Terminate contig extension at palindromic k-mers.
+	* If erosion (-e,--erode) is enabled, remove the tips of blunt
+	contigs that are represented only once.
+
+2008-11-07  Shaun Jackman  <sjackman@bcgsc.ca>
+
+	* Release version 1.0.1.
+	* Portability improvements to compile for Mac OS X.
+
+2008-08-07  Shaun Jackman  <sjackman@bcgsc.ca>
+
+	* Release version 1.0.
