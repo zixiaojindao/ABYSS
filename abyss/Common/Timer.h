@@ -2,6 +2,7 @@
 #define TIMER_H 1
 
 #include <string>
+#include <ctime>
 
 /**
  * Time the duration between the construction and destruction of this

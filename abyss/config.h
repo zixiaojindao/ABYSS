@@ -48,7 +48,7 @@
 #define HAVE_INTTYPES_H 1
 
 /* Define to 1 if you have the `dl' library (-ldl). */
-#define HAVE_LIBDL 1
+#define HAVE_LIBDL 0 
 
 /* Define to 1 if you have the `lam' library (-llam). */
 /* #undef HAVE_LIBLAM */
