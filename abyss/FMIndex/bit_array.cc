@@ -70,7 +70,7 @@ void BitArray::Build() {
 
 void BitArray::SetBit(uint64_t bit, uint64_t pos) {
   if (!bit) return;
-  bit_blocks_[pos / BLOCK_BITNUM] |= (1LLU << (pos % BLOCK_BITNUM));
+  bit_blocks_[pos / BLOCK_BITNUM] |= (1ULL << (pos % BLOCK_BITNUM));
 }
 
 uint64_t BitArray::Rank(uint64_t bit, uint64_t pos) const {
@@ -123,30 +123,30 @@ uint64_t BitArray::SelectOutBlock(uint64_t bit, uint64_t& rank) const {
 }
 
 uint64_t BitArray::SelectInBlock(uint64_t x, uint64_t rank) {
-  uint64_t x1 = x - ((x & 0xAAAAAAAAAAAAAAAALLU) >> 1);
-  uint64_t x2 = (x1 & 0x3333333333333333LLU) + ((x1 >> 2) & 0x3333333333333333LLU);
-  uint64_t x3 = (x2 + (x2 >> 4)) & 0x0F0F0F0F0F0F0F0FLLU;
+  uint64_t x1 = x - ((x & 0xAAAAAAAAAAAAAAAAULL) >> 1);
+  uint64_t x2 = (x1 & 0x3333333333333333ULL) + ((x1 >> 2) & 0x3333333333333333ULL);
+  uint64_t x3 = (x2 + (x2 >> 4)) & 0x0F0F0F0F0F0F0F0FULL;
 
   uint64_t pos = 0;
   for (;;  pos += 8){
-    uint64_t rank_next = (x3 >> pos) & 0xFFLLU;
+    uint64_t rank_next = (x3 >> pos) & 0xFFULL;
     if (rank <= rank_next) break;
     rank -= rank_next;
   }
 
-  uint64_t v2 = (x2 >> pos) & 0xFLLU;
+  uint64_t v2 = (x2 >> pos) & 0xFULL;
   if (rank > v2) {
     rank -= v2;
     pos += 4;
   }
 
-  uint64_t v1 = (x1 >> pos) & 0x3LLU;
+  uint64_t v1 = (x1 >> pos) & 0x3ULL;
   if (rank > v1){
     rank -= v1;
     pos += 2;
   }
 
-  uint64_t v0  = (x >> pos) & 0x1LLU;
+  uint64_t v0  = (x >> pos) & 0x1ULL;
   if (v0 < rank){
     rank -= v0;
     pos += 1;
@@ -156,7 +156,7 @@ uint64_t BitArray::SelectInBlock(uint64_t x, uint64_t rank) {
 }
 
 uint64_t BitArray::Lookup(uint64_t pos) const {
-  return (bit_blocks_[pos / BLOCK_BITNUM] >> (pos % BLOCK_BITNUM)) & 1LLU;
+  return (bit_blocks_[pos / BLOCK_BITNUM] >> (pos % BLOCK_BITNUM)) & 1ULL;
 }
 
 
@@ -181,7 +181,7 @@ uint64_t BitArray::PopCount(uint64_t x)
 
 uint64_t BitArray::PopCountMask(uint64_t x, uint64_t offset) {
   if (offset == 0) return 0;
-  return PopCount(x & ((1LLU << offset) - 1));
+  return PopCount(x & ((1ULL << offset) - 1));
 }
 
 uint64_t BitArray::GetBitNum(uint64_t one_num, uint64_t num, uint64_t bit) {

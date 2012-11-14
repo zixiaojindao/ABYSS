@@ -58,7 +58,7 @@ static inline uint64_t popcount(uint64_t x)
   x = x + (x >>  8);
   x = x + (x >> 16);
   x = x + (x >> 32);
-  return x & 0x7FLLU;
+  return x & 0x7FULL;
 #endif
 }
 

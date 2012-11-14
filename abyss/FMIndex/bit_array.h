@@ -26,8 +26,8 @@
 
 namespace wat_array {
 
-enum {
-  NOTFOUND = 0xFFFFFFFFFFFFFFFFLLU
+enum : unsigned long long{
+  NOTFOUND = 0xFFFFFFFFFFFFFFFFULL
 };
 
 class BitArray {
