@@ -5,6 +5,6 @@ using namespace std;
 
 void NotImplmentException(char* func)
 {
-	cout<<func<<" not implment"<<endl;
+	cerr<<func<<" not implment"<<endl;
 	assert(0);
 }

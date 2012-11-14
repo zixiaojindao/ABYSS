@@ -23,6 +23,7 @@
 *.sdf
 *.opensdf
 *.unsuccessfulbuild
+*.swp
 bin/
 x64/
 ipch/

@@ -15,27 +15,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="FastaReader.cpp">
+    <ClCompile Include="fac.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FastaWriter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="windows_port\localio.cpp">
+    <ClCompile Include="windows_port\getopt.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="FastaReader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FastaWriter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="windows_port\localio.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Options.h">
+    <ClInclude Include="windows_port\getopt.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
