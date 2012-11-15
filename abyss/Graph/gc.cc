@@ -8,7 +8,7 @@
 #include "IOUtil.h"
 #include "Uncompress.h"
 #include <fstream>
-#include <getopt.h>
+#include "windows_port\getopt.h"
 #include <iostream>
 
 using namespace std;
