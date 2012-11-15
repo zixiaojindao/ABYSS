@@ -477,7 +477,7 @@ char simple_aligner(struct seq_col *scol, struct diag_col *dcol,
 	      
 	      if((tmp_diag.length>0)&& tmp_diag.meetsThreshold) {
 		
-		hookdg = malloc(sizeof(struct diag));
+		hookdg = (struct diag*)malloc(sizeof(struct diag));
 		*hookdg = tmp_diag;
 		hookdg->marked = 1;
 
@@ -485,7 +485,7 @@ char simple_aligner(struct seq_col *scol, struct diag_col *dcol,
 		if(dcol->diag_amount>alloc_dlen) {
 		  //printf("\n\n\nresize %i %i\n\n\n", dlen, alloc_dlen);
 		  alloc_dlen += 8;
-		  dcol->diags = (diags = realloc(diags, sizeof(struct diag*)*alloc_dlen));
+		  dcol->diags = (diags = (struct diag**)realloc(diags, sizeof(struct diag*)*alloc_dlen));
 		  if(diags==NULL) error("Error increasing diag heap durign aligning.");
 		}
 		//print_diag(hookdg);
@@ -858,13 +858,14 @@ struct alignment* guided_aligner_rec(struct alignment *palgn,
   int diag_amount = dcol->diag_amount;//n1->seq_num_length + n2->seq_num_length;  
   double multi_weight_fac = 0.0;
   int diag_p=0;
-  struct diag **all_diags = malloc(sizeof( struct diag*)*diag_amount);
+  struct diag **all_diags = (struct diag**)malloc(sizeof( struct diag*)*diag_amount);
   //struct diag *looser_diags[diag_amount];
   int diag_l=0;
   struct simple_diag_col *sdcol;
   //char crossing[scol_len*scol_len];
   char changed;
-  char layer[scol_len];
+  //char layer[scol_len];
+  char* layer = (char*)calloc(scol_len, sizeof(char));
   //  memset(crossing, 0, sizeof(char)*scol_len*scol_len);
   memset(layer, 0, sizeof(char)*scol_len);
 
@@ -1055,7 +1056,7 @@ struct alignment* guided_aligner_rec(struct alignment *palgn,
 */
 
   diag_p = sdiag_p;
-  struct diag **looser_diags = malloc(sizeof( struct diag*)*diag_amount);
+  struct diag **looser_diags = (struct diag**)malloc(sizeof( struct diag*)*diag_amount);
 
 
   /*
@@ -1132,14 +1133,14 @@ struct alignment* guided_aligner_rec(struct alignment *palgn,
 		sdg->degree++;
 		if(sdg->degree > sdg->max_degree) {
 		  sdg->max_degree += 64;
-		  sdg->neighbours = realloc(sdg->neighbours, sizeof(struct diag *)*sdg->max_degree);
+		  sdg->neighbours = (struct diag**)realloc(sdg->neighbours, sizeof(struct diag *)*sdg->max_degree);
 		}
 		sdg->neighbours[sdg->degree - 1] = stdg;
 		
 		stdg->degree++;
 		if(stdg->degree > stdg->max_degree) {
 		  stdg->max_degree += 64;
-		  stdg->neighbours = realloc(stdg->neighbours, sizeof(struct diag *)*stdg->max_degree);
+		  stdg->neighbours = (struct diag**)realloc(stdg->neighbours, sizeof(struct diag *)*stdg->max_degree);
 		}
 		stdg->neighbours[stdg->degree - 1] = sdg;
 		//printf(" CONFLICT FOUND %i %i!\n", i,j);
@@ -1307,7 +1308,7 @@ struct alignment* guided_aligner_rec(struct alignment *palgn,
   //free(sall_diags);
   free(all_diags);
   free(looser_diags);
-
+  free(layer);
   return palgn;
 }
 
@@ -1392,7 +1393,7 @@ struct alignment* guided_aligner(struct alignment *palgn,
   
   
   struct diag_col tdcol;
-  struct diag **sall_diags = malloc(sizeof(struct diag*)*diag_p);
+  struct diag **sall_diags = (struct diag**)malloc(sizeof(struct diag*)*diag_p);
   int sdiag_p=0;
   
   for(i=0;i<diag_p;i++) {

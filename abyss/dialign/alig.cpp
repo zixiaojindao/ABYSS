@@ -45,7 +45,7 @@ struct alignment* create_empty_alignment(struct seq_col *scol) {
   printf("before\n");
   sleep(5);
   */
-  struct alignment* algn = malloc(sizeof(struct alignment));
+  struct alignment* algn = (struct alignment*)malloc(sizeof(struct alignment));
   sslen = scol->length;
   //allocss += sizeof(struct alignment);
   if(algn==NULL) error("create_empty_alignment(): (1) Out of memory !");
@@ -71,7 +71,7 @@ struct alignment* create_empty_alignment(struct seq_col *scol) {
 
 
   unsigned int slen = scol->length;
-  algn->seq_is_orphane = calloc(slen, sizeof(char));
+  algn->seq_is_orphane = (char*)calloc(slen, sizeof(char));
   //allocss += (sizeof(char)*slen);
 
   //xsize += slen*sizeof(char);
@@ -79,7 +79,7 @@ struct alignment* create_empty_alignment(struct seq_col *scol) {
   if(algn->seq_is_orphane==NULL) error("create_empty_alignment(): (2) Out of memory !");
   //  memset(algn->seq_is_orphane, 1, slen*sizeof(char));
   
-  algn->algn = malloc(sizeof(struct algn_pos *)*slen);
+  algn->algn = (struct algn_pos**)malloc(sizeof(struct algn_pos *)*slen);
   //allocss += sizeof(struct algn_pos *)*slen;
 
   //xsize += slen*sizeof(struct algn_pos *);
@@ -91,7 +91,7 @@ struct alignment* create_empty_alignment(struct seq_col *scol) {
   for(i=0;i<slen;i++) {
     sq = &(scol->seqs[i]);
     algn->seq_is_orphane[i]=1;
-    algn->algn[i] = malloc(sizeof(struct algn_pos)*sq->length );
+    algn->algn[i] = (struct algn_pos*)malloc(sizeof(struct algn_pos)*sq->length );
     //allocss += sizeof(struct algn_pos )*sq->length;
     //xsize += sq->length*sizeof(struct algn_pos *);
 
@@ -106,10 +106,10 @@ struct alignment* create_empty_alignment(struct seq_col *scol) {
       algn->algn[i][j].eqcParent= &(algn->algn[i][j]);
       //if(j==442) printf(" parent: %i\n", algn->algn[i][j].eqcParent);
       algn->algn[i][j].eqcRank= 0;
-      algn->algn[i][j].eqcAlgnPos=calloc(1, sizeof(int));;
+      algn->algn[i][j].eqcAlgnPos= (int*)calloc(1, sizeof(int));;
       //allocss += sizeof(int);
       *algn->algn[i][j].eqcAlgnPos=j;
-      algn->algn[i][j].proceed=calloc(1, sizeof(char));;
+      algn->algn[i][j].proceed= (char*)calloc(1, sizeof(char));;
       //allocss += sizeof(char);
       *algn->algn[i][j].proceed = 0;
 
@@ -708,11 +708,11 @@ char align_diag(struct alignment *algn, struct scr_matrix *smatrix, struct diag*
 	  //allocs += sizeof(int)*slen*2;
 	  //	  printf (" 3. malloc: %i %i %i\n",allocs, frees, allocs-frees);
 	  //balance += sizeof(int)*slen*2;
-	  tpos->predF = malloc(sizeof(int)*scol->length);
+	  tpos->predF = (int*)malloc(sizeof(int)*scol->length);
 	  //if(k==0) printf("           apos1->predF = %i\n",tpos->predF),
 	  //printf("pre succForphane %i %i\n", tpos->succF, scol->length);
 	  //printf(" step 2\n");
-	  tpos->succF = malloc(sizeof(int)*scol->length);
+	  tpos->succF = (int*)malloc(sizeof(int)*scol->length);
 	  //allocss += 2*sizeof(int )*scol->length;
 	  //printf("  step 3\n");
 	  //printf("succForphane %i\n", tpos);
@@ -982,7 +982,8 @@ void prepare_alignment(struct alignment *algn) {
   int *predF, *succF;
   struct seq* sq;
   struct algn_pos **ap = algn->algn;
-  int  tproc[slen];
+  //int  tproc[slen];
+  int* tproc = (int*)malloc(sizeof(int) * slen);
   //  char proceed[slen];
 
   for(i=0;i<slen;i++) {
@@ -1068,6 +1069,7 @@ void prepare_alignment(struct alignment *algn) {
     if(!hasmore) max = j+1;
   }
   algn->max_pos= max;
+  free(tproc);
 }
 
 

@@ -536,19 +536,19 @@ inline struct simple_diag_col* find_diags_guided(struct scr_matrix *smatrix,
   int slensq = slen*slen;
   int sqind;
   //char startstop[slensq];
-  char* startstop = (char*)calloc(slensq, sizeof(char));
+  char* startstop = (char*)malloc(slensq * sizeof(char));
   //char startstop_pre[slen];
-  char* startstop_pre = (char*)calloc(slen, sizeof(char));
+  char* startstop_pre = (char*)malloc(slen * sizeof(char));
   //int c_klen[slensq];
-  int* c_klen = (int*)calloc(slensq, sizeof(int));
+  int* c_klen = (int*)malloc(slensq * sizeof(int));
   //int c_kscore[slensq];
-  int* c_kscore = (int*)calloc(slensq, sizeof(int));
+  int* c_kscore = (int*)malloc(slensq * sizeof(int));
 
   //int rev_pos[slen][slen1];
   int** rev_pos = (int**)malloc(slen * sizeof(int*));
   int ci = 0;
   for(ci = 0; ci < slen; ++ci)
-	  rev_pos[ci] = (int*)calloc(slen1, sizeof(int));
+	  rev_pos[ci] = (int*)malloc(slen1 * sizeof(int));
 
   struct gt_node *tgtn;
 
@@ -557,7 +557,7 @@ inline struct simple_diag_col* find_diags_guided(struct scr_matrix *smatrix,
   
   int iterlen = 0;
   //int iter[slen*slen];
-  int* iter = (int*)calloc(slen * slen, sizeof(int));
+  int* iter = (int*)malloc(slen * slen * sizeof(int));
 
   for(ni1=0;ni1<n1->seq_num_length;ni1++) {
     sn1 = n1->seq_num[ni1];
@@ -1737,17 +1737,24 @@ void split_diags(struct seq_col *in_seq_col, struct diag_col *all_diags) {
  */
 void build_guide_tree(struct diag_col *dcol) {
   int slen = dcol->seq_amount;
-  double weights[slen][slen];
-  struct gt_node *nodes[slen];
+  //double weights[slen][slen];
+  double** weights = (double**)malloc(sizeof(double*) * slen);
+  int ci;
+  for(ci = 0; ci < slen; ++ci)
+	  weights[ci] = (double*)malloc(sizeof(double) * slen);
+
+  //struct gt_node *nodes[slen];
+  struct gt_node** nodes = (struct gt_node**)malloc(sizeof(gt_node*) * slen);
+
   struct gt_node *gtn, *gtn1, *gtn2;
   int max1=0, max2=1;
 
   int i,j,k;
 
   for(i=0;i<slen;i++) {
-    gtn = malloc(sizeof(struct gt_node ));
+    gtn = (struct gt_node*)malloc(sizeof(struct gt_node ));
     gtn->isLeaf = 1;
-    gtn->seq_num = malloc(sizeof(int)*1);
+    gtn->seq_num = (int*)malloc(sizeof(int)*1);
     gtn->seq_num[0] = i;
     gtn->seq_num_length = 1;
     gtn->succ1 = NULL;
@@ -1766,10 +1773,10 @@ void build_guide_tree(struct diag_col *dcol) {
   for(k=0;k<(slen-1);k++) {
     gtn1 = nodes[max1];
     gtn2 = nodes[max2];
-    gtn = malloc(sizeof(struct gt_node ));
+    gtn = (struct gt_node*)malloc(sizeof(struct gt_node ));
     gtn->isLeaf = 0;
     gtn->seq_num_length = gtn1->seq_num_length + gtn2->seq_num_length;
-    gtn->seq_num = malloc(sizeof(int)*gtn->seq_num_length);
+    gtn->seq_num = (int*)malloc(sizeof(int)*gtn->seq_num_length);
 
     for(i=0;i<gtn1->seq_num_length;i++) {
       gtn->seq_num[i] = gtn1->seq_num[i];
@@ -1811,6 +1818,10 @@ void build_guide_tree(struct diag_col *dcol) {
   printf(" left2 %i\n", nodes[0]->succ1->succ2->seq_num);
   printf(" right %i\n", nodes[0]->succ2->seq_num);
   */
+  for(ci = 0; ci < slen; ++ci)
+	  free(weights[ci]);
+  free(weights);
+  free(nodes);
 }
 
 
@@ -1837,14 +1848,16 @@ struct diag_col *find_all_diags(struct scr_matrix *smatrix,
   if(!hasAli) tmp_dist = create_tmp_pdist(pdist); 
  
   int s2max = sl; 
-  int s2width =(int) sqrt(sl); 
+  int s2width =(int) sqrt((double)sl); 
  
   double total=0.0; 
   //double imp[sl]; 
   //  for(s1=0;s1<sl;s1++) { 
   //  imp[s1] = 0.0; 
   //} 
-  double totala[sl]; 
+  
+  //double totala[sl]; 
+  double* totala = (double*)malloc(sizeof(double) * sl);
   memset(totala,0,sizeof(double)*sl); 
   for(s1=0;s1<sl;s1++) { 
     if(para->FAST_PAIRWISE_ALIGNMENT && s2width+1<sl) { 
@@ -1897,7 +1910,7 @@ struct diag_col *find_all_diags(struct scr_matrix *smatrix,
     } 
   } 
   if(!hasAli) free_tmp_pdist(tmp_dist, pdist->max_dlen); 
-  all_diags->diags= calloc(diag_amount, sizeof(struct diag*)); 
+  all_diags->diags= (struct diag**)calloc(diag_amount, sizeof(struct diag*)); 
   if(all_diags->diags==NULL) error("find_all_diags(): (1) Out of memory !"); 
  
   ap=0; 
@@ -1957,7 +1970,7 @@ struct diag_col *find_all_diags(struct scr_matrix *smatrix,
   } 
    
   all_diags->diag_amount = diag_amount; 
-
+  free(totala);
   if(! hasAli) build_guide_tree(all_diags);
   return all_diags; 
 } 
@@ -1989,7 +2002,7 @@ struct diag_col *old_find_all_diags(struct scr_matrix *smatrix,
   if(!hasAli) tmp_dist = create_tmp_pdist(pdist); 
  
   int s2max = sl; 
-  int s2width =(int) sqrt(sl); 
+  int s2width =(int) sqrt((double)sl); 
  
   double total=0.0; 
   //double imp[sl]; 
@@ -2079,7 +2092,7 @@ struct diag_col *old_find_all_diags(struct scr_matrix *smatrix,
   //double max = 0.0;
 
 
-  all_diags->diags= calloc(diag_amount, sizeof(struct diag*)); 
+  all_diags->diags= (struct diag**)calloc(diag_amount, sizeof(struct diag*)); 
   if(all_diags->diags==NULL) error("find_all_diags(): (1) Out of memory !"); 
 
   double sdtotal;
