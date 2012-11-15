@@ -76,18 +76,16 @@ void translate_sequence(struct seq *in_seq)
 		case 5: in_seq->crick_strand=1;
 				break;
 	}
-
-	struct seq* new;
-
-	if(NULL == ( new = (calloc(1,sizeof(struct seq)))))
+	struct seq* newt;
+	if(NULL == ( newt = (struct seq*)(calloc(1,sizeof(struct seq)))))
 	{
 		error("translate_sequence: Out of memory! ");
 	}
-	if(NULL == (new->data = (calloc(in_seq->length/3+1, sizeof(char)))))
+	if(NULL == (newt->data = (char*)(calloc(in_seq->length/3+1, sizeof(char)))))
 	{
 		error("translate_sequence: Out of memory! ");
 	}
-	if(NULL == (new->dna_num = (calloc(in_seq->length/3+1, sizeof(char)))))
+	if(NULL == (newt->dna_num = (char*)(calloc(in_seq->length/3+1, sizeof(char)))))
 	{
 		error("translate_sequence: Out of memory! ");
 	}
@@ -100,13 +98,13 @@ void translate_sequence(struct seq *in_seq)
 		
 		if(in_seq->crick_strand==0)
 		{
-			new->data[new->length] = translate(in_seq->data[i], in_seq->data[i+1], in_seq->data[i+2], &(new->dna_num[new->length]) );
-			++new->length;
+			newt->data[newt->length] = translate(in_seq->data[i], in_seq->data[i+1], in_seq->data[i+2], &(newt->dna_num[newt->length]) );
+			++newt->length;
 		}
 		else
 		{
-			new->data[new->length] = translate(inverse(in_seq->data[help - i]), inverse(in_seq->data[help - (i+1)]), inverse(in_seq->data[help - (i+2)]), &(new->dna_num[new->length]) );
-			++new->length;
+			newt->data[newt->length] = translate(inverse(in_seq->data[help - i]), inverse(in_seq->data[help - (i+1)]), inverse(in_seq->data[help - (i+2)]), &(newt->dna_num[newt->length]) );
+			++newt->length;
 		}
 		i=i+2;
 	}
@@ -122,9 +120,9 @@ void translate_sequence(struct seq *in_seq)
 		default: free(in_seq->data);
 	}
 
-	in_seq->data = &(new->data[0]);
-	in_seq->length = new->length;
-	in_seq->dna_num = new->dna_num;
+	in_seq->data = &(newt->data[0]);
+	in_seq->length = newt->length;
+	in_seq->dna_num = newt->dna_num;
 
 }
 
@@ -471,11 +469,11 @@ void retranslate_sequence(struct seq *in_seq)
 	char *tmp_char= "000";
 	int i;
 	struct seq* tmp;
-	if(NULL == ( tmp =(calloc(1,sizeof(struct seq)))))
+	if(NULL == ( tmp = (struct seq*)(calloc(1,sizeof(struct seq)))))
 	{
 		error("retranslate_sequence(): Out of memory !");
 	}
-	if(NULL == ( tmp->data =(calloc((in_seq->length)*3+1,sizeof(char)))))
+	if(NULL == ( tmp->data = (char*)(calloc((in_seq->length)*3+1,sizeof(char)))))
 	{
 		error("retranslate_sequence(): Out of memory !");
 	}

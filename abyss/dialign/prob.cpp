@@ -42,7 +42,7 @@ void fill_random_seq(struct seq* sq, struct scr_matrix *smatrix) {
   int pos, rnd;
   for(pos=0; pos<length;pos++) {
     do {
-      rnd = (int)( (slen*random())/(RAND_MAX+1.0));
+      rnd = (int)( (slen*rand())/(RAND_MAX+1.0));
       data[pos]=(char)(n2c[rnd]);
     } while(n2c[rnd]=='X' || (n2c[rnd]<'A') || (n2c[rnd]>'Z'));
   }
@@ -57,10 +57,10 @@ void fill_random_seq(struct seq* sq, struct scr_matrix *smatrix) {
  * has to be deallocted explicitely from memory.
  */
 struct seq* create_random_seq(struct scr_matrix *smatrix, int length) {
-  struct seq* sq = calloc(1, sizeof(struct seq));
+  struct seq* sq = (struct seq*)calloc(1, sizeof(struct seq));
   sq->length=length;
-  sq->data = calloc(length, sizeof(char));
-  sq->name = calloc(strlen("random")+1, sizeof(char));
+  sq->data = (char*)calloc(length, sizeof(char));
+  sq->name = (char*)calloc(strlen("random")+1, sizeof(char));
   strcpy(sq->name, "random");
   fill_random_seq(sq, smatrix);
   return sq;
@@ -77,11 +77,11 @@ struct seq* create_random_seq(struct scr_matrix *smatrix, int length) {
 struct prob_dist* calc_score_dist(struct scr_matrix *smatrix, int mxdlen) { 
   long sm_max_scr = smatrix->max_score;
   long maxdlen = mxdlen;
-  struct prob_dist *sdist = calloc(1, sizeof(struct prob_dist));
+  struct prob_dist *sdist = (struct prob_dist*)calloc(1, sizeof(struct prob_dist));
 
-  long **edist = (calloc(maxdlen+1, sizeof(long  *)));
-  long **tdist = (calloc(maxdlen+1, sizeof(long  *)));
-  long double **dist = (sdist->data=calloc(maxdlen+1, sizeof(long double *)));
+  long **edist = (long**)(calloc(maxdlen+1, sizeof(long  *)));
+  long **tdist = (long**)(calloc(maxdlen+1, sizeof(long  *)));
+  long double **dist = (sdist->data = (long double**)calloc(maxdlen+1, sizeof(long double *)));
 
   if(sdist==NULL || dist==NULL || edist==NULL|| tdist==NULL) error("calc_score_dist(): Out of memory !");
   sdist->max_dlen = maxdlen;
@@ -100,9 +100,9 @@ struct prob_dist* calc_score_dist(struct scr_matrix *smatrix, int mxdlen) {
 
   for(i=1;i<=maxdlen;i++) {
     mxscr = i*sm_max_scr;
-    dist[i] = calloc(mxscr+1, sizeof(long double ));
-    edist[i] = calloc(mxscr+1, sizeof(long  ));
-    tdist[i] = calloc(mxscr+1, sizeof(long  ));
+    dist[i] = (long double*)calloc(mxscr+1, sizeof(long double ));
+    edist[i] = (long*)calloc(mxscr+1, sizeof(long  ));
+    tdist[i] = (long*)calloc(mxscr+1, sizeof(long  ));
     if(dist[i]==NULL) error("calc_score_dist(): Out of memory at iteration" );
     if(i==1) {
       for(j=0;j<=mxscr;j++) {
@@ -149,12 +149,12 @@ struct prob_dist* calc_score_dist(struct scr_matrix *smatrix, int mxdlen) {
 	dist[i][scr] += dist[i][scr2];
       }
 
-      dist[i][scr] = dist[i][scr]*pow(1.0/square,i);
+      dist[i][scr] = dist[i][scr]*pow(1.0/square,(long double)i);
     }
   }
   // EXPERIMENTS:
 
-  srandom((int)time(NULL));
+  srand((int)time(NULL));
   sq1 = create_random_seq(smatrix, 2*maxdlen);
   sq2 = create_random_seq(smatrix, 2*maxdlen);
   dg.seq_p1.sq = sq1;

@@ -21,11 +21,11 @@ struct seq_col* set_longest_orf(struct seq_col *in_seq_col)
 	
 	struct seq_col *ret_seq_col;
 	struct seq *seq, *input_seq;
-	if((ret_seq_col = calloc(1,sizeof(struct seq_col)))==NULL)
+	if((ret_seq_col = (struct seq_col*)calloc(1,sizeof(struct seq_col)))==NULL)
 	{
 		error("set_longest_orf(): Out of memory ");
 	}
-	if((ret_seq_col->seqs = calloc((in_seq_col->length),sizeof(struct seq)))==NULL)
+	if((ret_seq_col->seqs = (struct seq*)calloc((in_seq_col->length),sizeof(struct seq)))==NULL)
 	{
 		error("set_longest_orf(): Out of memory ");
 	}
@@ -63,7 +63,7 @@ struct seq* orf_finder(struct seq *in_seq)
 	a=0;b=0;c=0;d=0;e=0;f=0;
 
 
-	if((orfs = (calloc (12, sizeof(struct orf *)))) == NULL) // We need 12 because we look for the longest orf in every reading frame
+	if((orfs = (struct orf**)(calloc (12, sizeof(struct orf *)))) == NULL) // We need 12 because we look for the longest orf in every reading frame
 															 // and save the longest for every reading frame = 6 
 															 // orf[0] && orf[1] for reading frame a
 															// orf[2] && orf[3] for reading frame b	
@@ -78,15 +78,15 @@ struct seq* orf_finder(struct seq *in_seq)
 
 	for (x = 0; x != 12; ++x)
 	{
-		if((orfs[x] = (calloc(1,sizeof(struct orf))))==NULL)
+		if((orfs[x] = (struct orf*)(calloc(1,sizeof(struct orf))))==NULL)
 		{
 		error("orf_finder(): Out of memory !");
 		}
-		if((orfs[x]->sequence = (calloc(j+1,sizeof(char))))==NULL)
+		if((orfs[x]->sequence = (char*)(calloc(j+1,sizeof(char))))==NULL)
 		{
 		error("orf_finder(2): Out of memory !");
 		}
-		if((orfs[x]->dna_num = (calloc(j+1,sizeof(char))))==NULL)
+		if((orfs[x]->dna_num = (char*)(calloc(j+1,sizeof(char))))==NULL)
 		{
 		error("orf_finder(3): Out of memory !");
 		}
@@ -351,11 +351,11 @@ struct seq* orf_finder(struct seq *in_seq)
 					free(orfs[1]->sequence);
 					free(orfs[1]->dna_num);
 					free(orfs[1]);
-					if((orfs[1] = calloc(1, sizeof(struct orf))) == NULL) // free memory
+					if((orfs[1] = (struct orf*)calloc(1, sizeof(struct orf))) == NULL) // free memory
 						error("orf_finder(): Out of memory!");
-					if((orfs[1]->sequence = calloc(j+1, sizeof(char))) == NULL)
+					if((orfs[1]->sequence = (char*)calloc(j+1, sizeof(char))) == NULL)
 						error("orf_finder(): Out of memory!");
-					if((orfs[1]->dna_num = calloc(j+1, sizeof(char))) == NULL)
+					if((orfs[1]->dna_num = (char*)calloc(j+1, sizeof(char))) == NULL)
 						error("orf_finder(): Out of memory!");
 					orfs[1]->length=0;							// new init
 					orfs[1]->finish = 0;
@@ -367,11 +367,11 @@ struct seq* orf_finder(struct seq *in_seq)
 					free(orfs[0]->dna_num);
 					free(orfs[0]->sequence);
 					free(orfs[0]);
-					if((orfs[0] = calloc(1, sizeof(struct orf))) == NULL) // free memory
+					if((orfs[0] = (struct orf*)calloc(1, sizeof(struct orf))) == NULL) // free memory
 						error("orf_finder(): Out of memory!");
-					if((orfs[0]->sequence = calloc(j+1, sizeof(char))) == NULL)
+					if((orfs[0]->sequence = (char*)calloc(j+1, sizeof(char))) == NULL)
 						error("orf_finder(): Out of memory!");
-					if((orfs[0]->dna_num = calloc(j+1, sizeof(char))) == NULL)
+					if((orfs[0]->dna_num = (char*)calloc(j+1, sizeof(char))) == NULL)
 						error("orf_finder(): Out of memory!");
 					orfs[0]->length = 0;						// new init
 					orfs[0]->finish = 0;
@@ -409,11 +409,11 @@ struct seq* orf_finder(struct seq *in_seq)
 					free(orfs[3]->dna_num);
 					free(orfs[3]->sequence);
 					free(orfs[3]);
-					if((orfs[3] = calloc(1, sizeof(struct orf))) == NULL) // free memory
+					if((orfs[3] = (struct orf*)calloc(1, sizeof(struct orf))) == NULL) // free memory
 						error("orf_finder(): Out of memory!");
-					if((orfs[3]->sequence = calloc(j+1, sizeof(char))) == NULL)
+					if((orfs[3]->sequence = (char*)calloc(j+1, sizeof(char))) == NULL)
 						error("orf_finder(): Out of memory!");
-					if((orfs[3]->dna_num = calloc(j+1, sizeof(char))) == NULL)
+					if((orfs[3]->dna_num = (char*)calloc(j+1, sizeof(char))) == NULL)
 						error("orf_finder(): Out of memory!");
 
 					orfs[3]->length=0;							// new init
@@ -426,11 +426,11 @@ struct seq* orf_finder(struct seq *in_seq)
 					free(orfs[2]->dna_num);
 					free(orfs[2]->sequence);
 					free(orfs[2]);
-					if((orfs[2] = calloc(1, sizeof(struct orf))) == NULL) // free memory
+					if((orfs[2] = (struct orf*)calloc(1, sizeof(struct orf))) == NULL) // free memory
 						error("orf_finder(): Out of memory!");
-					if((orfs[2]->sequence = calloc(j+1, sizeof(char))) == NULL)
+					if((orfs[2]->sequence = (char*)calloc(j+1, sizeof(char))) == NULL)
 						error("orf_finder(): Out of memory!");	
-					if((orfs[2]->dna_num = calloc(j+1, sizeof(char))) == NULL)
+					if((orfs[2]->dna_num = (char*)calloc(j+1, sizeof(char))) == NULL)
 						error("orf_finder(): Out of memory!");
 
 					orfs[2]->length = 0;						// new init
@@ -468,11 +468,11 @@ struct seq* orf_finder(struct seq *in_seq)
 					free(orfs[5]->dna_num);
 					free(orfs[5]->sequence);
 					free(orfs[5]);
-					if((orfs[5] = calloc(1, sizeof(struct orf))) == NULL) // free memory
+					if((orfs[5] = (struct orf*)calloc(1, sizeof(struct orf))) == NULL) // free memory
 						error("orf_finder(): Out of memory!");
-					if((orfs[5]->sequence = calloc(j+1, sizeof(char))) == NULL)
+					if((orfs[5]->sequence = (char*)calloc(j+1, sizeof(char))) == NULL)
 						error("orf_finder(): Out of memory!");
-					if((orfs[5]->dna_num = calloc(j+1, sizeof(char))) == NULL)
+					if((orfs[5]->dna_num = (char*)calloc(j+1, sizeof(char))) == NULL)
 						error("orf_finder(): Out of memory!");
 					orfs[5]->length=0;							// new init
 					orfs[5]->finish = 0;
@@ -484,11 +484,11 @@ struct seq* orf_finder(struct seq *in_seq)
 					free(orfs[4]->dna_num);
 					free(orfs[4]->sequence);
 					free(orfs[4]);
-					if((orfs[4] = calloc(1, sizeof(struct orf))) == NULL) // free memory
+					if((orfs[4] = (struct orf*)calloc(1, sizeof(struct orf))) == NULL) // free memory
 						error("orf_finder(): Out of memory!");
-					if((orfs[4]->sequence = calloc(j+1, sizeof(char))) == NULL)
+					if((orfs[4]->sequence = (char*)calloc(j+1, sizeof(char))) == NULL)
 						error("orf_finder(): Out of memory!");
-					if((orfs[4]->dna_num = calloc(j+1, sizeof(char))) == NULL)
+					if((orfs[4]->dna_num = (char*)calloc(j+1, sizeof(char))) == NULL)
 						error("orf_finder(): Out of memory!");
 					orfs[4]->length = 0;						// new init
 					orfs[4]->finish = 0;
@@ -528,11 +528,11 @@ struct seq* orf_finder(struct seq *in_seq)
 					free(orfs[7]->dna_num);
 					free(orfs[7]->sequence);
 					free(orfs[7]);
-					if((orfs[7] = calloc(1, sizeof(struct orf))) == NULL) // free memory
+					if((orfs[7] = (struct orf*)calloc(1, sizeof(struct orf))) == NULL) // free memory
 						error("orf_finder(): Out of memory!");
-					if((orfs[7]->sequence = calloc(j+1, sizeof(char))) == NULL)
+					if((orfs[7]->sequence = (char*)calloc(j+1, sizeof(char))) == NULL)
 						error("orf_finder(): Out of memory!");
-					if((orfs[7]->dna_num = calloc(j+1, sizeof(char))) == NULL)
+					if((orfs[7]->dna_num = (char*)calloc(j+1, sizeof(char))) == NULL)
 						error("orf_finder(): Out of memory!");
 					orfs[7]->length=0;							// new init
 					orfs[7]->finish = 0;
@@ -544,11 +544,11 @@ struct seq* orf_finder(struct seq *in_seq)
 					free(orfs[6]->dna_num);
 					free(orfs[6]->sequence);
 					free(orfs[6]);
-					if((orfs[6] = calloc(1, sizeof(struct orf))) == NULL) // free memory
+					if((orfs[6] = (struct orf*)calloc(1, sizeof(struct orf))) == NULL) // free memory
 						error("orf_finder(): Out of memory!");
-					if((orfs[6]->sequence = calloc(j+1, sizeof(char))) == NULL)
+					if((orfs[6]->sequence = (char*)calloc(j+1, sizeof(char))) == NULL)
 						error("orf_finder(): Out of memory!");
-					if((orfs[6]->dna_num = calloc(j+1, sizeof(char))) == NULL)
+					if((orfs[6]->dna_num = (char*)calloc(j+1, sizeof(char))) == NULL)
 						error("orf_finder(): Out of memory!");
 					orfs[6]->length = 0;						// new init
 					orfs[6]->finish = 0;
@@ -586,11 +586,11 @@ struct seq* orf_finder(struct seq *in_seq)
 					free(orfs[9]->dna_num);
 					free(orfs[9]->sequence);
 					free(orfs[9]);
-					if((orfs[9] = calloc(1, sizeof(struct orf))) == NULL) // free memory
+					if((orfs[9] = (struct orf*)calloc(1, sizeof(struct orf))) == NULL) // free memory
 						error("orf_finder(): Out of memory!");
-					if((orfs[9]->sequence = calloc(j+1, sizeof(char))) == NULL)
+					if((orfs[9]->sequence = (char*)calloc(j+1, sizeof(char))) == NULL)
 						error("orf_finder(): Out of memory!");
-					if((orfs[9]->dna_num = calloc(j+1, sizeof(char))) == NULL)
+					if((orfs[9]->dna_num = (char*)calloc(j+1, sizeof(char))) == NULL)
 						error("orf_finder(): Out of memory!");
 					orfs[9]->length=0;							// new init
 					orfs[9]->finish = 0;
@@ -603,11 +603,11 @@ struct seq* orf_finder(struct seq *in_seq)
 					free(orfs[8]->dna_num);
 					free(orfs[8]->sequence);
 					free(orfs[8]);
-					if((orfs[8] = calloc(1, sizeof(struct orf))) == NULL) // free memory
+					if((orfs[8] = (struct orf*)calloc(1, sizeof(struct orf))) == NULL) // free memory
 						error("orf_finder(): Out of memory!");
-					if((orfs[8]->sequence = calloc(j+1, sizeof(char))) == NULL)
+					if((orfs[8]->sequence = (char*)calloc(j+1, sizeof(char))) == NULL)
 						error("orf_finder(): Out of memory!");
-					if((orfs[8]->dna_num = calloc(j+1, sizeof(char))) == NULL)
+					if((orfs[8]->dna_num = (char*)calloc(j+1, sizeof(char))) == NULL)
 						error("orf_finder(): Out of memory!");
 					orfs[8]->length = 0;						// new init
 					orfs[8]->finish = 0;
@@ -645,11 +645,11 @@ struct seq* orf_finder(struct seq *in_seq)
 					free(orfs[11]->dna_num);
 					free(orfs[11]->sequence);
 					free(orfs[11]);
-					if((orfs[11] = calloc(1, sizeof(struct orf))) == NULL) // free memory
+					if((orfs[11] = (struct orf*)calloc(1, sizeof(struct orf))) == NULL) // free memory
 						error("orf_finder(): Out of memory!");
-					if((orfs[11]->sequence = calloc(j+1, sizeof(char))) == NULL)
+					if((orfs[11]->sequence = (char*)calloc(j+1, sizeof(char))) == NULL)
 						error("orf_finder(): Out of memory!");
-					if((orfs[11]->dna_num = calloc(j+1, sizeof(char))) == NULL)
+					if((orfs[11]->dna_num = (char*)calloc(j+1, sizeof(char))) == NULL)
 						error("orf_finder(): Out of memory!");
 					orfs[11]->length=0;							// new init
 					orfs[11]->finish = 0;
@@ -661,11 +661,11 @@ struct seq* orf_finder(struct seq *in_seq)
 					free(orfs[10]->dna_num);
 					free(orfs[10]->sequence);
 					free(orfs[10]);
-					if((orfs[10] = calloc(1, sizeof(struct orf))) == NULL) // free memory
+					if((orfs[10] = (struct orf*)calloc(1, sizeof(struct orf))) == NULL) // free memory
 						error("orf_finder(): Out of memory!");
-					if((orfs[10]->sequence = calloc(j+1, sizeof(char))) == NULL)
+					if((orfs[10]->sequence = (char*)calloc(j+1, sizeof(char))) == NULL)
 						error("orf_finder(): Out of memory!");
-					if((orfs[10]->dna_num = calloc(j+1, sizeof(char))) == NULL)
+					if((orfs[10]->dna_num = (char*)calloc(j+1, sizeof(char))) == NULL)
 						error("orf_finder(): Out of memory!");
 					orfs[10]->length = 0;						// new init
 					orfs[10]->finish = 0;
@@ -844,7 +844,7 @@ struct seq* orf_finder(struct seq *in_seq)
 	}
 
 // now we got 12 orfs and we search for the longest
-	if((ret_seq = calloc(1,sizeof(struct seq)))==NULL)
+	if((ret_seq = (struct seq*)calloc(1,sizeof(struct seq)))==NULL)
 	{
 		error("orf_finder(): Out of memory");
 	}
@@ -860,11 +860,11 @@ struct seq* orf_finder(struct seq *in_seq)
 			max_orf=i;
 		}
 	}
-	if((ret_seq->data = calloc(max_length+1, sizeof(char)))==NULL)
+	if((ret_seq->data = (char*)calloc(max_length+1, sizeof(char)))==NULL)
 	{
 		error("orf_finder(): Out of memory");
 	}
-	if((ret_seq->dna_num = calloc(max_length+1, sizeof(char)))==NULL)
+	if((ret_seq->dna_num = (char*)calloc(max_length+1, sizeof(char)))==NULL)
 	{
 		error("orf_finder(): Out of memory");
 	}

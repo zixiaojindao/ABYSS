@@ -190,9 +190,10 @@ int main(int argc, char **argv)
   tim2=clock();
 
   if(! para->FAST_MODE) {
-    struct diag *cp_diags[all_diags->diag_amount];
+    //struct diag *cp_diags[all_diags->diag_amount];
+	  struct diag** cp_diags = (struct diag**)calloc(all_diags->diag_amount, sizeof(struct diag*));
     for(i=0;i<diag_amount;i++) {
-      cp_diags[i] = malloc(sizeof (struct diag));
+      cp_diags[i] = (struct diag*)malloc(sizeof (struct diag));
       *(cp_diags[i]) = *(all_diags->diags[i]);
     }
     guided_aligner(algn, in_seq_col, all_diags,smatrix,pdist,all_diags->gt_root, 1);
@@ -202,6 +203,7 @@ int main(int argc, char **argv)
       all_diags->diags[i] = cp_diags[i];
     }
     all_diags->diag_amount = diag_amount;
+	free(cp_diags);
   }
   //struct alignment *algn = salgn;
   simple_aligner(in_seq_col, all_diags,smatrix,pdist,salgn,1);

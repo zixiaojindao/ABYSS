@@ -12,7 +12,7 @@
 #include <limits.h>
 #include <string.h>
 #include <float.h>
-#include <unistd.h>
+//#include <unistd.h>
 #include "parameters.h"
 #include "struct.h"
 #include "io.h"
