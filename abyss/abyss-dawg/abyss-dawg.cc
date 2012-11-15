@@ -5,18 +5,20 @@
 #include <boost/graph/depth_first_search.hpp>
 #include <boost/property_map/property_map.hpp>
 #include <cassert>
+#include <cctype>
 #include "windows_port\getopt.h"
 #include <iostream>
 #include <iterator>
 #include <sstream>
 #include <string>
+#include <map>
 #include <vector>
 
 using namespace std;
 
-using boost::default_color_type;
+using boost::default_dfs_visitor;
 
-#define PROGRAM "abyss-count"
+#define PROGRAM "abyss-dawg"
 
 static const char VERSION_MESSAGE[] =
 PROGRAM " (" PACKAGE_NAME ") " VERSION "\n"
@@ -26,10 +28,9 @@ PROGRAM " (" PACKAGE_NAME ") " VERSION "\n"
 
 static const char USAGE_MESSAGE[] =
 "Usage: " PROGRAM " [OPTION]... [FASTA]\n"
-"Count k-mer of the specified file.\n"
+"Output a directed acyclic word graph (DAWG) of the specified file.\n"
 "The index file TARGET.fm will be used if present.\n"
 "\n"
-"  -k, --kmer              the size of a k-mer\n"
 "  -v, --verbose           display verbose output\n"
 "      --help              display this help and exit\n"
 "      --version           output version information and exit\n"
@@ -37,19 +38,15 @@ static const char USAGE_MESSAGE[] =
 "Report bugs to <" PACKAGE_BUGREPORT ">.\n";
 
 namespace opt {
-	/** The size of a k-mer. */
-	static unsigned k;
-
 	/** Verbose output. */
 	static int verbose;
 };
 
-static const char shortopts[] = "k:v";
+static const char shortopts[] = "v";
 
 enum { OPT_HELP = 1, OPT_VERSION };
 
 static const struct option longopts[] = {
-	{ "kmer", no_argument, NULL, 'k' },
 	{ "verbose", no_argument, NULL, 'v' },
 	{ "help", no_argument, NULL, OPT_HELP },
 	{ "version", no_argument, NULL, OPT_VERSION },
@@ -59,70 +56,29 @@ static const struct option longopts[] = {
 /** A directed acyclic word graph. */
 typedef DAWG Graph;
 
-/** A color map that always returns white. */
-struct WhiteMap
-{
-	typedef graph_traits<Graph>::vertex_descriptor key_type;
-	typedef default_color_type value_type;
-	typedef value_type& reference;
-	typedef boost::lvalue_property_map_tag category;
-};
-
-default_color_type get(const WhiteMap&,
-		graph_traits<Graph>::vertex_descriptor)
-{
-	return boost::white_color;
-}
-
-void put(WhiteMap&,
-		graph_traits<Graph>::vertex_descriptor, default_color_type)
-{
-}
-
-/** Count k-mer. */
-class CountKmerVisitor : public boost::default_dfs_visitor
+/** DAWG visitor. */
+struct DAWGVisitor : public default_dfs_visitor
 {
 	typedef graph_traits<Graph>::edge_descriptor E;
 	typedef graph_traits<Graph>::vertex_descriptor V;
 
-  public:
-	CountKmerVisitor(vector<char>& s) : m_s(s)
+	void examine_edge(E e, const Graph& g)
 	{
-		assert(m_s.empty());
-		m_s.reserve(opt::k);
+		using boost::edge_name;
+		V u = source(e, g);
+		V v = target(e, g);
+		char c = get(edge_name, g, e);
+		cout << '"'
+			<< u.first << ',' << u.second << "\" -> \""
+			<< v.first << ',' << v.second << "\""
+			" [label=\"";
+		if (isprint(c))
+			cout << c;
+		else
+			cout << "0x" << hex << (unsigned)c << dec;
+		cout << "\"]\n";
 	}
-
-	bool operator()(V u, const Graph& g) const
-	{
-		assert(m_s.size() < opt::k);
-		if (u.first == 0)
-			return false;
-		char c = get(boost::vertex_name, g, u);
-		m_s.push_back(c);
-		if (c == '-')
-			return true;
-		if (m_s.size() < opt::k)
-			return false;
-		assert(m_s.size() == opt::k);
-		unsigned count = u.second - u.first;
-		copy(m_s.rbegin(), m_s.rend(),
-				ostream_iterator<char>(cout));
-		cout << '\t' << count << '\n';
-		return true;
-	}
-
-	void finish_vertex(V u, const Graph&)
-	{
-		if (m_s.empty()) {
-			assert(u.first == 0);
-			(void)u;
-		} else
-			m_s.pop_back();
-	}
-
-  private:
-	vector<char>& m_s;
-}; // CountKmerVisitor
+};
 
 /** Read an FM index. */
 static void readFMIndex(FMIndex& g, const string& faPath)
@@ -165,9 +121,6 @@ int main(int argc, char** argv)
 					shortopts, longopts, NULL)) != -1;) {
 		istringstream arg(optarg != NULL ? optarg : "");
 		switch (c) {
-		  case 'k':
-			arg >> opt::k;
-			break;
 		  case 'v':
 			opt::verbose++;
 			break;
@@ -185,11 +138,6 @@ int main(int argc, char** argv)
 		}
 	}
 
-	if (opt::k <= 0) {
-		cerr << PROGRAM ": " << "missing -k,--kmer option\n";
-		die = true;
-	}
-
 	if (argc - optind > 1) {
 		cerr << PROGRAM ": too many arguments\n";
 		die = true;
@@ -202,14 +150,23 @@ int main(int argc, char** argv)
 
 	string faPath(optind < argc ? argv[optind] : "-");
 
+	using boost::default_color_type;
+	using boost::depth_first_visit;
+	using boost::make_assoc_property_map;
+
+	typedef graph_traits<Graph>::vertex_descriptor V;
+
 	// Read the FM index.
 	Graph g;
 	readFMIndex(g, faPath);
 
-	// Count k-mer.
-	vector<char> s;
-	boost::depth_first_visit(g, *vertices(g).first,
-			CountKmerVisitor(s), WhiteMap(), CountKmerVisitor(s));
+	cout << "digraph dawg {\n";
+
+	map<V, default_color_type> colorMap;
+	depth_first_visit(g, *vertices(g).first,
+			DAWGVisitor(), make_assoc_property_map(colorMap));
+
+	cout << "}\n" << flush;
 	assert_good(cout, "stdout");
 
 	return 0;

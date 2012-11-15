@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="count.cc">
+    <ClCompile Include="abyss-dawg.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="windows_port\getopt.cpp">
