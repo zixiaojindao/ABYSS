@@ -50,7 +50,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..;.;windows_port;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <TargetMachine>MachineX86</TargetMachine>
@@ -82,6 +82,7 @@
     <ClCompile Include="parameters.cpp" />
     <ClCompile Include="prob.cpp" />
     <ClCompile Include="translate.cpp" />
+    <ClCompile Include="windows_port\getopt.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="io.h" />
@@ -89,6 +90,7 @@
     <ClInclude Include="parameters.h" />
     <ClInclude Include="struct.h" />
     <ClInclude Include="translate.h" />
+    <ClInclude Include="windows_port\getopt.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

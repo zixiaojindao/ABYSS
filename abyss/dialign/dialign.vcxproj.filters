@@ -39,6 +39,9 @@
     <ClCompile Include="alig.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="windows_port\getopt.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="io.h">
@@ -54,6 +57,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="translate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="windows_port\getopt.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

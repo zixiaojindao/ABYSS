@@ -95,7 +95,7 @@ void strip_leading_ws( char *str ) {
 char* build_pathname(char *dir, char *file) {
   int dirslen = strlen(dir);
 
-  char *pathn = calloc(dirslen+strlen(file)+2, sizeof(char));
+  char *pathn = (char*)calloc(dirslen+strlen(file)+2, sizeof(char));
   if(pathn==NULL) error("build_pathname(): out of memory !");
   
   strcpy(pathn, dir);
@@ -120,7 +120,8 @@ void print_seq(struct seq * aSeq) {
   printf("Sequence: %s\nLength: %i\n", aSeq->name, slen);
 
 
-  char line[para->PRINT_SEQ_LINE_LENGTH+1]; 
+  //char line[para->PRINT_SEQ_LINE_LENGTH+1]; 
+  char* line = (char*)calloc(para->PRINT_SEQ_LINE_LENGTH + 1, sizeof(char));
   
   for(row=0;row <=maxrow; row++) {
     if(row<maxrow) {
@@ -135,7 +136,7 @@ void print_seq(struct seq * aSeq) {
     }
     printf("%s\n", line);
   }
-
+  free(line);
 }
 
 /**
@@ -158,7 +159,8 @@ void print_diag(struct diag *aDiag) {
   int startpos2 = aDiag->seq_p2.startpos;
   int snum, startpos;
 
-  char line[para->PRINT_SEQ_LINE_LENGTH+1]; 
+  //char line[para->PRINT_SEQ_LINE_LENGTH+1]; 
+  char* line = (char*)calloc(para->PRINT_SEQ_LINE_LENGTH + 1, sizeof(char));
 
   for(row=0;row <=maxrow; row++) {
     for (snum=0;snum<2;snum++) {
@@ -179,6 +181,7 @@ void print_diag(struct diag *aDiag) {
     if(row<maxrow) printf("\n");
   }
   printf("Score: %li Weight: %e \n", aDiag->score, aDiag->weight);
+  free(line);
 }
 
 /**
@@ -217,9 +220,9 @@ struct scr_matrix* read_scr_matrix(char *filename) {
 
   int length = 0;
 
-  struct scr_matrix *smatrix = calloc(1, sizeof(struct scr_matrix));
-  int *char2num = (smatrix->char2num =calloc(256, sizeof(int)));
-  int *num2char = (smatrix->num2char =calloc(256, sizeof(int)));
+  struct scr_matrix *smatrix = (struct scr_matrix*)calloc(1, sizeof(struct scr_matrix));
+  int *char2num = (smatrix->char2num = (int *)calloc(256, sizeof(int)));
+  int *num2char = (smatrix->num2char = (int *)calloc(256, sizeof(int)));
 
   if(smatrix==NULL || char2num==NULL) error("read_scr_matrix(): Out of memory !");
   
@@ -254,7 +257,7 @@ struct scr_matrix* read_scr_matrix(char *filename) {
   if(length==0) merror("read_scr_matrix(): Invalid format of file ",filename);
 
   smatrix->length = length; 
-  int *data = (smatrix->data = calloc(length*length, sizeof(int)));
+  int *data = (smatrix->data = (int*)calloc(length*length, sizeof(int)));
   if(data==NULL) error("read_scr_matrix(): Out of memory when allocating data !");
 
   // read the matrix entries
@@ -288,7 +291,7 @@ struct scr_matrix* read_scr_matrix(char *filename) {
   smatrix->avg_sim_score = para->PROT_SIM_SCORE_THRESHOLD;
   int ms = smatrix->max_score;
   
-  int *dist = (smatrix->dist=calloc(ms+1, sizeof(int)));
+  int *dist = (smatrix->dist = (int*)calloc(ms+1, sizeof(int)));
   for(r=0;r<ms;r++) {
     dist[r]=0;
   }
@@ -317,7 +320,7 @@ struct prob_dist* read_diag_prob_dist(struct scr_matrix* smatrix, char *filename
 
   int length = 0;
 
-  struct prob_dist *pdist = calloc(1, sizeof(struct prob_dist));
+  struct prob_dist *pdist = (struct prob_dist*)calloc(1, sizeof(struct prob_dist));
   pdist->smatrix = smatrix;
 
   if(pdist==NULL) error("read_diag_prob_dist(): Out of memory !");
@@ -342,11 +345,11 @@ struct prob_dist* read_diag_prob_dist(struct scr_matrix* smatrix, char *filename
   //  length=40;
   
   pdist->max_dlen = length; 
-  pdist->data = calloc(length+1, sizeof(long double *));
+  pdist->data = (long double**)calloc(length+1, sizeof(long double *));
   long double **dist =pdist->data;
   if(dist==NULL) error("read_diag_prob_dist(): (1) Out of memory when allocating data !");
 
-  pdist->log_data = calloc(length+1, sizeof(double *));
+  pdist->log_data = (double**)calloc(length+1, sizeof(double *));
   double **log_dist =pdist->log_data;
   if(log_dist==NULL) error("read_diag_prob_dist(): (1.1) Out of memory when allocating data !");
 
@@ -360,8 +363,8 @@ struct prob_dist* read_diag_prob_dist(struct scr_matrix* smatrix, char *filename
   for( i=1; i<=length; i++) {
     mxscr = i*sm_max_scr;
     size += mxscr+1;
-    dist[i] = calloc(mxscr+1, sizeof(long double ));
-    log_dist[i] = calloc(mxscr+1, sizeof(long double ));
+    dist[i] = (long double*)calloc(mxscr+1, sizeof(long double ));
+    log_dist[i] = (double*)calloc(mxscr+1, sizeof(long double ));
     if(dist[i]==NULL) error("read_diag_prob_dist(): (3) Out of memory at iteration" );
     for(scr=0;scr<=mxscr;scr++) {
       dist[i][scr]=1.0;
@@ -397,15 +400,16 @@ struct seq_col* read_fasta(char *filename) {
   if(para->DEBUG)
     printf("DEBUG read_seq_col(): Processing input file: %s\n", filename);
 
-  struct seq_col *scol = calloc(1, sizeof(struct seq_col));
-  struct seq* seqs = (scol->seqs = calloc(para->MAX_SEQ_AMOUNT, sizeof(struct seq)));
+  struct seq_col *scol = (struct seq_col*)calloc(1, sizeof(struct seq_col));
+  struct seq* seqs = (scol->seqs = (struct seq*)calloc(para->MAX_SEQ_AMOUNT, sizeof(struct seq)));
   struct seq* seq;
 
   if(scol==NULL || seqs==NULL) error("read_fasta(): Out of memory !");
 
   FILE *fp;
 
-  char rline[para->MAX_FASTA_LINE_LENGTH];
+  //char rline[para->MAX_FASTA_LINE_LENGTH];
+  char* rline = (char*)calloc(para->MAX_FASTA_LINE_LENGTH, sizeof(char));
 
   if( (fp = fopen( filename , "r")) == NULL) { 
     merror("read_fasta(): Cannot open input FASTA file", filename );
@@ -434,7 +438,7 @@ struct seq_col* read_fasta(char *filename) {
 		
       seq = &(scol->seqs[scol->length]);
       seq->max_seen = 0;
-      seq->name = calloc(rlen, sizeof(char));
+      seq->name = (char*)calloc(rlen, sizeof(char));
       seq->num = scol->length;
 	  seq->orf_frame=0;
 	  seq->crick_strand=0;
@@ -444,7 +448,7 @@ struct seq_col* read_fasta(char *filename) {
       *slen = 0;
 
       data_maxlen = 1024;
-      seq->data = (data = calloc(data_maxlen, sizeof(char)));
+      seq->data = (data = (char*)calloc(data_maxlen, sizeof(char)));
       if(data==NULL) error("read_fasta(): Out of memory: seq->data alloc");
 
       scol->length++;
@@ -465,7 +469,7 @@ struct seq_col* read_fasta(char *filename) {
 
 		
 		name_length = strlen(seq->name);
-		if(NULL == (seq->name = realloc(seq->name,rlen + name_length) ) )
+		if(NULL == (seq->name = (char*)realloc(seq->name,rlen + name_length) ) )
 		{
 			error("read_fasta(): Out of memory: seq->data realloc");
 		}
@@ -484,7 +488,7 @@ struct seq_col* read_fasta(char *filename) {
 	  if(*slen >= data_maxlen) 
 	  {
 	    data_maxlen += 1024;
-	    seq->data = (data = realloc(data, data_maxlen*sizeof(char)));
+	    seq->data = (data = (char*)realloc(data, data_maxlen*sizeof(char)));
 	    if(data==NULL) error("read_fasta(): Out of memory: seq->data alloc");
 	  }
 	  data[(*slen)++] = ((ch >= 97) ? toupper(ch) : ch);
@@ -503,6 +507,7 @@ struct seq_col* read_fasta(char *filename) {
     printf("\n");
   
   fclose(fp);
+  free(rline);
   return scol;
 }
 
@@ -515,7 +520,7 @@ struct simple_diag_col* read_anchors(char *filename, struct seq_col* scol) {
   if(para->DEBUG)
     printf("DEBUG read_anchors(): Processing anchor file: %s\n", filename);
 
-  struct simple_diag_col *sdcol = malloc(sizeof(struct simple_diag_col));
+  struct simple_diag_col *sdcol = (struct simple_diag_col*)malloc(sizeof(struct simple_diag_col));
 
   FILE *fp;
 
@@ -529,13 +534,13 @@ struct simple_diag_col* read_anchors(char *filename, struct seq_col* scol) {
   double score;
   
   int alloc_size = 64;
-  sdcol->data = malloc(sizeof (struct diag*)*alloc_size);
+  sdcol->data = (struct diag**)malloc(sizeof (struct diag*)*alloc_size);
   sdcol->length=0;
 
   while( fscanf(fp,"%li %li %li %li %li %le\n",&s1,&s2,&sp1,&sp2,&len,&score ) == 6) {
     if(sdcol->length >= alloc_size) {
       alloc_size+=16;
-      sdcol->data = realloc(sdcol->data,sizeof (struct diag*)*alloc_size);
+      sdcol->data = (struct diag**)realloc(sdcol->data,sizeof (struct diag*)*alloc_size);
     }
     sdcol->data[sdcol->length]= create_diag(s1-1,&(scol->seqs[s1-1]),sp1-1,
 					    s2-1,&(scol->seqs[s2-1]),sp2-1,len);
@@ -561,7 +566,8 @@ void simple_print_alignment_default(struct alignment *algn) {
   unsigned int i,j,s,pos,max,tmax;
   struct seq* sq;
   struct algn_pos **ap = algn->algn;
-  int proc[slen];
+  //int proc[slen];
+  int* proc = (int*)calloc(slen, sizeof(int));
   //  char proceed[slen];
 
   for(i=0;i<slen;i++) {
@@ -628,6 +634,7 @@ void simple_print_alignment_default(struct alignment *algn) {
     printf("\n");
     printf("\n");
   }
+  free(proc);
 }
 
 void simple_print_alignment_dna_retranslate(struct alignment *algn) 
@@ -639,7 +646,8 @@ void simple_print_alignment_dna_retranslate(struct alignment *algn)
   unsigned int i,j,s,pos,max,tmax;
   struct seq* sq;
   struct algn_pos **ap = algn->algn;
-  int proc[slen];
+  //int proc[slen];
+  int* proc = (int*)calloc(slen, sizeof(int));
   //  char proceed[slen];
 
   for(i=0;i<slen;i++) {
@@ -702,7 +710,7 @@ void simple_print_alignment_dna_retranslate(struct alignment *algn)
     printf("\n");
     printf("\n");
   }
-
+  free(proc);
 }
 
 
@@ -823,7 +831,7 @@ char* print_info(struct alignment *algn)
 	char *output;
 	char *line, *line2;
 
-	if(NULL == ( output = (calloc(63,sizeof(char)))))
+	if(NULL == ( output = (char*)(calloc(63,sizeof(char)))))
 	{
 		error("print_info(): Out of memory !");
 	}
@@ -837,11 +845,11 @@ char* print_info(struct alignment *algn)
 		if(para->FIND_ORF){
 			if(!para->ORF_FRAME){
 //				-L :
-				if(NULL == ( line = (calloc(62, sizeof(char)))))
+				if(NULL == ( line = (char*)(calloc(62, sizeof(char)))))
 				{
 					error("print_info(): Out of memory !");
 				}
-				if(NULL == ( output = (realloc(output,strlen(output)+15*61))))
+				if(NULL == ( output = (char*)(realloc(output,strlen(output)+15*61))))
 				{
 					error("print_info(): Out of memory !");
 				}
@@ -903,7 +911,7 @@ char* print_info(struct alignment *algn)
 					strcat(line, tmp);
 					line[strlen(line)-1]=tmp2;
 					line[strlen(line)]='\0';
-					if(NULL == ( output = (realloc(output,strlen(output)+62))))
+					if(NULL == ( output = (char*)(realloc(output,strlen(output)+62))))
 					{
 						error("print_info(): Out of memory !");
 					}
@@ -916,11 +924,11 @@ char* print_info(struct alignment *algn)
 
 			else{
 //				-O :
-				if(NULL == ( line = (calloc(62, sizeof(char)))))
+				if(NULL == ( line = (char*)(calloc(62, sizeof(char)))))
 				{
 					error("print_info(): Out of memory !");
 				}
-				if(NULL == ( output = (realloc(output,strlen(output)+15*61))))
+				if(NULL == ( output = (char*)(realloc(output,strlen(output)+15*61))))
 				{
 					error("print_info(): Out of memory !");
 				}
@@ -982,7 +990,7 @@ char* print_info(struct alignment *algn)
 					strcat(line, tmp);
 					line[strlen(line)-1]=tmp2;
 					line[strlen(line)]='\0';
-					if(NULL == ( output = (realloc(output,strlen(output)+62))))
+					if(NULL == ( output = (char*)(realloc(output,strlen(output)+62))))
 					{
 						error("print_info(): Out of memory !");
 					}
@@ -995,11 +1003,11 @@ char* print_info(struct alignment *algn)
 		}
 		else{
 //			-T :
-			if(NULL == ( line = (calloc(62, sizeof(char)))))
+			if(NULL == ( line = (char*)(calloc(62, sizeof(char)))))
 			{
 				error("print_info(): Out of memory !");
 			}
-			if(NULL == ( output = (realloc(output,strlen(output)+5*61))))
+			if(NULL == ( output = (char*)(realloc(output,strlen(output)+5*61))))
 			{
 				error("print_info(): Out of memory !");
 			}
@@ -1024,15 +1032,15 @@ char* print_info(struct alignment *algn)
 	}		
 	else{
 // 		-D :
-		if(NULL == ( line = (calloc(62, sizeof(char)))))
+		if(NULL == ( line = (char*)(calloc(62, sizeof(char)))))
 		{
 			error("print_info(): Out of memory !");
 		}
-		if(NULL == ( line2 = (calloc(62, sizeof(char)))))
+		if(NULL == ( line2 = (char*)(calloc(62, sizeof(char)))))
 		{
 			error("print_info(): Out of memory !");
 		}
-		if(NULL == ( output = (realloc(output,strlen(output)+3*61+1))))
+		if(NULL == ( output = (char*)(realloc(output,strlen(output)+3*61+1))))
 		{
 			error("print_info(): Out of memory !");
 		}
@@ -1053,7 +1061,7 @@ char* print_info(struct alignment *algn)
 		free(line2);
 		
 	}
-	if(NULL == ( output = (realloc(output,strlen(output)+63))))
+	if(NULL == ( output = (char*)(realloc(output,strlen(output)+63))))
 	{
 		error("print_info(): Out of memory !");
 	}
@@ -1071,7 +1079,7 @@ char* print_info(struct alignment *algn)
 char* output_line(char *string)
 {
 	char *tmp;
-	if(NULL == ( tmp = (calloc(62, sizeof(char)))))
+	if(NULL == ( tmp = (char*)(calloc(62, sizeof(char)))))
 	{
 			error("print_info(): Out of memory !");
 	}
@@ -1099,7 +1107,7 @@ char* output_line(char *string)
 char* output_line_left(char *string)
 {
 	char *tmp;
-	if(NULL == ( tmp = (calloc(62, sizeof(char)))))
+	if(NULL == ( tmp = (char*)(calloc(62, sizeof(char)))))
 	{
 			error("print_info(): Out of memory !");
 	}
@@ -1122,7 +1130,7 @@ char* blank_line()
 	int i;
 	char *string;
 
-	if(NULL == ( string = (calloc(62,sizeof(char)))))
+	if(NULL == ( string = (char*)(calloc(62,sizeof(char)))))
 	{
 		error("print_info(): Out of memory !");
 	}

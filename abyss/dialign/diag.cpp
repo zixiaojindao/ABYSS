@@ -30,7 +30,7 @@ extern void prepare_alignment(struct alignment *algn);
 struct diag* create_diag(int n1, struct seq* sq1, unsigned int sp1,  
 			 int n2, struct seq* sq2, unsigned int sp2, 
 			 int dlength) { 
-  struct diag* dg = malloc(sizeof(struct diag)); 
+  struct diag* dg = (struct diag*)malloc(sizeof(struct diag)); 
   if(dg==NULL) error("create_diag(): Out of Memory !");
  
   if(sq1->length < sp1+dlength) { 
@@ -122,14 +122,14 @@ long double **create_tmp_pdist(struct prob_dist *pdist) {
   int length = pdist->max_dlen; 
   struct scr_matrix *smatrix = pdist->smatrix; 
  
-  long double **dist = calloc(length+1, sizeof(long double *)); 
+  long double **dist = (long double**)calloc(length+1, sizeof(long double *)); 
   if(dist==NULL) error("create_tmp_pdist(): (1) Out of memory when allocating data !"); 
  
   int i; 
   long mxscr, sm_max_scr=smatrix->max_score; 
   for(i=0;i<=length;i++) { 
     mxscr = i *sm_max_scr; 
-    dist[i] = calloc(mxscr+1, sizeof(long double )); 
+    dist[i] = (long double*)calloc(mxscr+1, sizeof(long double )); 
     if(dist[i]==NULL) error("create_tmp_pdist(): (3) Out of memory at iteration" ); 
   } 
   return dist; 
@@ -400,11 +400,11 @@ void calc_ov_weight(struct diag* dg, struct diag_col *dcol, struct scr_matrix* s
  * has to be deallocted explicitely from memory. 
  */ 
 struct diag_col* create_diag_col(int seq_amount) { 
-  struct diag_col *dc = calloc(1, sizeof(struct diag_col)); 
+  struct diag_col *dc = (struct diag_col*)calloc(1, sizeof(struct diag_col)); 
   if(dc==NULL) error("create_diag_col(): (1) Out of memory !"); 
  
   //printf("go for k\n"); 
-  dc->diag_matrix = malloc(seq_amount*seq_amount* 
+  dc->diag_matrix = (struct simple_diag_col**)malloc(seq_amount*seq_amount* 
 			   sizeof(struct simple_diag_col *)); 
   //printf("2go for k\n"); 
   dc->gt_root = NULL;
@@ -450,7 +450,7 @@ inline struct simple_diag_col* find_diags_guided(struct scr_matrix *smatrix,
 				double thres_weight,
 				int*** diag_info) { 
   
-  struct simple_diag_col* dcol = calloc(1, sizeof(struct simple_diag_col)); 
+  struct simple_diag_col* dcol = (struct simple_diag_col*) calloc(1, sizeof(struct simple_diag_col)); 
   if(dcol==NULL) error("find_diags_guided(): (1) Out of memory !"); 
 
   prepare_alignment(algn);
@@ -467,7 +467,7 @@ inline struct simple_diag_col* find_diags_guided(struct scr_matrix *smatrix,
 
   unsigned int size = 16; 
   int length = 0; 
-  struct diag **data = calloc(size, sizeof(struct diag* )); 
+  struct diag **data = (struct diag**)calloc(size, sizeof(struct diag* )); 
   //   printf("go for k\n"); 
   if(data==NULL) error("find_diags_guided(): (2) Out of memory !"); 
    
@@ -505,9 +505,9 @@ inline struct simple_diag_col* find_diags_guided(struct scr_matrix *smatrix,
   
  
   int max_pool = (slen1+slen2-1); 
-  struct diag **diag_col = malloc(sizeof(struct diag*)*(slen1+1)); 
-  struct diag **diag_row = malloc(sizeof(struct diag*)*(slen2+1)); 
-  struct diag **pool_diags=malloc(sizeof(struct diag *)*max_pool); 
+  struct diag **diag_col = (struct diag**)malloc(sizeof(struct diag*)*(slen1+1)); 
+  struct diag **diag_row = (struct diag**)malloc(sizeof(struct diag*)*(slen2+1)); 
+  struct diag **pool_diags= (struct diag**)malloc(sizeof(struct diag *)*max_pool); 
   int pooled = 0; 
   double thres_sim_score =para->PROT_SIM_SCORE_THRESHOLD; 
   char hasAli = (algn!=NULL); 
@@ -527,7 +527,7 @@ inline struct simple_diag_col* find_diags_guided(struct scr_matrix *smatrix,
   //int min_motives = n1->seq_num_length;
   //if(n2->seq_num_length > min_motives) min_motives = n2->seq_num_length;
   //min_motives++;
-  int min_motives = sqrt(n1->seq_num_length * n2->seq_num_length);
+  int min_motives = sqrt((double)n1->seq_num_length * n2->seq_num_length);
   if(min_motives<2) min_motives = 2;
   //  if(min_motives>(n1->seq_num_length*n2->seq_num_length)) min_motives = (n1->seq_num_length * n2->seq_num_length);
 
@@ -535,19 +535,30 @@ inline struct simple_diag_col* find_diags_guided(struct scr_matrix *smatrix,
   char mstatus;
   int slensq = slen*slen;
   int sqind;
-  char startstop[slensq];
-  char startstop_pre[slen];
-  int c_klen[slensq];
-  int c_kscore[slensq];
+  //char startstop[slensq];
+  char* startstop = (char*)calloc(slensq, sizeof(char));
+  //char startstop_pre[slen];
+  char* startstop_pre = (char*)calloc(slen, sizeof(char));
+  //int c_klen[slensq];
+  int* c_klen = (int*)calloc(slensq, sizeof(int));
+  //int c_kscore[slensq];
+  int* c_kscore = (int*)calloc(slensq, sizeof(int));
 
-  int rev_pos[slen][slen1];
+  //int rev_pos[slen][slen1];
+  int** rev_pos = (int**)malloc(slen * sizeof(int*));
+  int ci = 0;
+  for(ci = 0; ci < slen; ++ci)
+	  rev_pos[ci] = (int*)calloc(slen1, sizeof(int));
+
   struct gt_node *tgtn;
 
 
   // build reverse algn pos 
   
   int iterlen = 0;
-  int iter[slen*slen];
+  //int iter[slen*slen];
+  int* iter = (int*)calloc(slen * slen, sizeof(int));
+
   for(ni1=0;ni1<n1->seq_num_length;ni1++) {
     sn1 = n1->seq_num[ni1];
     for(ni2=0;ni2<n2->seq_num_length;ni2++) {
@@ -562,7 +573,7 @@ inline struct simple_diag_col* find_diags_guided(struct scr_matrix *smatrix,
   dg->multi_dg = 1;
   dg->marked = 1;
   dg->multi_length = slensq;
-  dg->multi_cont = malloc(sizeof(struct diag *)*slensq);
+  dg->multi_cont = (struct diag**)malloc(sizeof(struct diag *)*slensq);
   memset(dg->multi_cont, 0, sizeof(struct diag *)*slensq);
   for(i=0;i<slensq;i++) {
     dg->multi_cont[i]=NULL;
@@ -841,10 +852,10 @@ inline struct simple_diag_col* find_diags_guided(struct scr_matrix *smatrix,
 	    
 	    if(max_pool<=pooled) { 
 	      max_pool += maxslen; 
-	      pool_diags = realloc(pool_diags, sizeof(struct diag*)*max_pool); 
+	      pool_diags = (struct diag**)realloc(pool_diags, sizeof(struct diag*)*max_pool); 
 	      //printf(" pool size %i %.20f %.20f\n", max_pool, dg->weight, old_weight);
 	    } 
-	    tdg = malloc(sizeof(struct diag)); 
+	    tdg = (struct diag*)malloc(sizeof(struct diag)); 
 	    pool_diags[pooled] = tdg; 
 	    dg->pool_pos = pooled; 
 	    pooled++; 
@@ -855,13 +866,13 @@ inline struct simple_diag_col* find_diags_guided(struct scr_matrix *smatrix,
 	    
 	    diag_col[i+k] = tdg; 
 
-	    dg->multi_cont = malloc(sizeof(struct diag *)*slensq);
+	    dg->multi_cont = (struct diag**)malloc(sizeof(struct diag *)*slensq);
 	    memset(dg->multi_cont, 0, sizeof(struct diag *)*slensq);
 	    for(l=0;l<iterlen;l++) {
 	      
 	      tsdg = tdg->multi_cont[iter[l]];
 	      if((tsdg!=NULL)) { // && (startstop[iter[l]]==1)){
-		sdg = malloc(sizeof(struct diag)); 
+		sdg = (struct diag*)malloc(sizeof(struct diag)); 
 
 		if(startstop[iter[l]]==0) {
 		  tsdg->length = 0;
@@ -888,7 +899,7 @@ inline struct simple_diag_col* find_diags_guided(struct scr_matrix *smatrix,
   //printf(" after main %i\n",k);
   tdg = diag_row[slen2]; 
   dcol->total_weight = 0; 
-  double lencomp = (log(slen1)+log(slen2)); 
+  double lencomp = (log((double)slen1)+log((double)slen2)); 
   length = 0;
   
   while((tdg!=NULL)) { 
@@ -924,7 +935,7 @@ inline struct simple_diag_col* find_diags_guided(struct scr_matrix *smatrix,
 
       if(length >= size) { 
 	size += 64; 
-	data = realloc(data, sizeof(struct diag *)*size); 
+	data = (struct diag**)realloc(data, sizeof(struct diag *)*size); 
 	if(data==NULL) error("find_diags(): (3) Out of memory !"); 
       } 
     } 
@@ -946,11 +957,21 @@ inline struct simple_diag_col* find_diags_guided(struct scr_matrix *smatrix,
 
   dcol->length = length; 
  
-  data = realloc(data, sizeof(struct diag *)*length); 
+  data = (struct diag**)realloc(data, sizeof(struct diag *)*length); 
   dcol->data = data; 
+
+  free(startstop);
+  free(startstop_pre);
+  free(c_klen);
+  free(c_kscore);
+  for(ci = 0; ci < slen; ++ci)
+	  free(rev_pos[ci]);
+  free(rev_pos);
+  free(iter);
 
   return dcol;
 }
+
 
 /** 
  * finds all relevant diags by the DIALIGN METHOD  
@@ -962,12 +983,12 @@ struct simple_diag_col* find_diags_dialign(struct scr_matrix *smatrix,
 				struct prob_dist *pdist, struct seq* seq1,  
 				struct seq* seq2, struct alignment *algn, 
 				 long double **tmp_dist, int round) { 
-  struct simple_diag_col* dcol = calloc(1, sizeof(struct simple_diag_col)); 
+  struct simple_diag_col* dcol = (struct simple_diag_col*)calloc(1, sizeof(struct simple_diag_col)); 
   if(dcol==NULL) error("find_diags_dialign(): (1) Out of memory !"); 
    
   unsigned int size = 16; 
   int length = 0; 
-  struct diag **data = calloc(size, sizeof(struct diag* )); 
+  struct diag **data = (struct diag**)calloc(size, sizeof(struct diag* )); 
   //   printf("go for k\n"); 
   if(data==NULL) error("find_diags_dialign(): (2) Out of memory !"); 
    
@@ -996,9 +1017,9 @@ struct simple_diag_col* find_diags_dialign(struct scr_matrix *smatrix,
   if(slen2>maxslen) maxslen = slen2; 
  
   int max_pool = (slen1+slen2-1); 
-  struct diag **diag_col = malloc(sizeof(struct diag*)*(slen1+1)); 
-  struct diag **diag_row = malloc(sizeof(struct diag*)*(slen2+1)); 
-  struct diag **pool_diags=malloc(sizeof(struct diag *)*max_pool); 
+  struct diag **diag_col = (struct diag**)malloc(sizeof(struct diag*)*(slen1+1)); 
+  struct diag **diag_row = (struct diag**)malloc(sizeof(struct diag*)*(slen2+1)); 
+  struct diag **pool_diags= (struct diag**)malloc(sizeof(struct diag *)*max_pool); 
   int pooled = 0; 
   double thres_sim_score =para->PROT_SIM_SCORE_THRESHOLD; 
   char hasAli = (round>1); //(algn!=NULL); 
@@ -1186,10 +1207,10 @@ struct simple_diag_col* find_diags_dialign(struct scr_matrix *smatrix,
 		old_weight = dg->weight; 
 		if(max_pool<=pooled) { 
 		  max_pool += maxslen; 
-		  pool_diags = realloc(pool_diags, sizeof(struct diag*)*max_pool); 
+		  pool_diags = (struct diag**)realloc(pool_diags, sizeof(struct diag*)*max_pool); 
 		  //printf(" old pool size %i\n", max_pool);
 		} 
-		tdg = malloc(sizeof(struct diag)); 
+		tdg = (struct diag*)malloc(sizeof(struct diag)); 
 		pool_diags[pooled] = tdg; 
 		dg->pool_pos = pooled; 
 		pooled++; 
@@ -1210,7 +1231,7 @@ struct simple_diag_col* find_diags_dialign(struct scr_matrix *smatrix,
    
   tdg = diag_row[slen2]; 
   dcol->total_weight = 0; 
-  double lencomp = (log(slen1)+log(slen2)); 
+  double lencomp = (log((double)slen1)+log((double)slen2)); 
  
   while((tdg!=NULL)) { 
     if (tdg->weight <=0.0) break; 
@@ -1222,7 +1243,7 @@ struct simple_diag_col* find_diags_dialign(struct scr_matrix *smatrix,
       length++; 
       if(length >= size) { 
 	size += 64; 
-	data = realloc(data, sizeof(struct diag *)*size); 
+	data = (struct diag**)realloc(data, sizeof(struct diag *)*size); 
 	if(data==NULL) error("find_diags(): (3) Out of memory !"); 
       } 
     } 
@@ -1242,7 +1263,7 @@ struct simple_diag_col* find_diags_dialign(struct scr_matrix *smatrix,
   free_diag(dg); 
   dcol->length = length; 
  
-  data = realloc(data, sizeof(struct diag *)*length); 
+  data = (struct diag**)realloc(data, sizeof(struct diag *)*length); 
   dcol->data = data; 
  
   if(para->DEBUG>5) { 
@@ -1267,13 +1288,13 @@ inline struct simple_diag_col* find_diags_dyn(struct scr_matrix *smatrix,
 				struct seq* seq2, struct alignment *algn, 
 				 long double **tmp_dist) { 
  
-  struct simple_diag_col* dcol = calloc(1, sizeof(struct simple_diag_col)); 
+  struct simple_diag_col* dcol = (struct simple_diag_col*)calloc(1, sizeof(struct simple_diag_col)); 
   if(dcol==NULL) error("find_diags_dyn(): (1) Out of memory !"); 
    
   unsigned int size = 64; 
   int  l, k,lastk, maxl; 
   int length = 0; 
-  struct diag **data = calloc(size, sizeof(struct diag *)); 
+  struct diag **data = (struct diag**)calloc(size, sizeof(struct diag *)); 
   if(data==NULL) error("find_diags_dyn(): (2) Out of memory !"); 
    
   int slen1 = seq1->length; 
@@ -1303,18 +1324,25 @@ inline struct simple_diag_col* find_diags_dyn(struct scr_matrix *smatrix,
   double avslen = ((double)slen1+slen2)/2.0; 
  
   int delta; 
-  int sim_thr_pred_pos[maxslen]; 
-  //int sim_thr_succ_pos[maxslen]; 
-  int scores[maxslen]; 
-  long score_sum[maxslen]; 
+  //int sim_thr_pred_pos[maxslen]; 
+  int* sim_thr_pred_pos = (int*)calloc(maxslen, sizeof(int));
+
+  //int sim_thr_succ_pos[maxslen]; comment by author 
+
+  //int scores[maxslen]; 
+  int* scores = (int*)calloc(maxslen, sizeof(int));
+
+  //long score_sum[maxslen]; 
+  long* score_sum = (long*)calloc(maxslen, sizeof(long));
+
   long s_sum; 
   int old_thr_pos; 
  
   //double *dyn_weight = calloc(maxslen, sizeof(double)); 
   double weight; 
-  struct diag **dyn_diags=malloc(sizeof(struct diag *)*maxslen); 
+  struct diag **dyn_diags= (struct diag**)malloc(sizeof(struct diag *)*maxslen); 
   int max_pool = maxslen; 
-  struct diag **pool_diags=malloc(sizeof(struct diag *)*max_pool); 
+  struct diag **pool_diags= (struct diag**)malloc(sizeof(struct diag *)*max_pool); 
   int pooled = 0; 
  
   int thres_sim_score = para->PROT_SIM_SCORE_THRESHOLD; 
@@ -1459,12 +1487,12 @@ inline struct simple_diag_col* find_diags_dyn(struct scr_matrix *smatrix,
 	      if(dg->meetsThreshold) { 
 		if(max_pool<=pooled) { 
 		  max_pool += maxslen; 
-		  pool_diags = realloc(pool_diags, sizeof(struct diag*)*max_pool); 
+		  pool_diags = (struct diag**)realloc(pool_diags, sizeof(struct diag*)*max_pool); 
 		} 
 		if(delta==0) { 
 		  if(dg->weight > dyn_diags[k]->weight_sum) { 
 		    dg->weight_sum = dg->weight; 
-		    dyn_diags[k] = malloc(sizeof(struct diag));  
+		    dyn_diags[k] = (struct diag*)malloc(sizeof(struct diag));  
 		    pool_diags[pooled] = dyn_diags[k]; 
 		    pooled++; 
 		    *dyn_diags[k] = *dg; 
@@ -1474,7 +1502,7 @@ inline struct simple_diag_col* find_diags_dyn(struct scr_matrix *smatrix,
 		  weight = dg->weight + dyn_diags[delta-1]->weight_sum; 
 		  if( (weight) >= dyn_diags[k]->weight_sum) { 
 		    dg->weight_sum = weight; 
-		    dyn_diags[k] = malloc(sizeof(struct diag));  
+		    dyn_diags[k] = (struct diag*)malloc(sizeof(struct diag));  
 		    pool_diags[pooled] = dyn_diags[k]; 
 		    pooled++; 
 		    *dyn_diags[k] = *dg; 
@@ -1505,7 +1533,7 @@ inline struct simple_diag_col* find_diags_dyn(struct scr_matrix *smatrix,
       length++; 
       if(length >= size) { 
 	size += 64; 
-	data = realloc(data, sizeof(struct diag *)*size); 
+	data = (struct diag**)realloc(data, sizeof(struct diag *)*size); 
 	if(data==NULL) error("find_diags(): (3) Out of memory !"); 
       } 
       tdg = tdg->pred_diag; 
@@ -1517,7 +1545,11 @@ inline struct simple_diag_col* find_diags_dyn(struct scr_matrix *smatrix,
     } 
   } 
  
-  data = realloc(data, sizeof(struct diag *)*length); 
+  data = (struct diag**)realloc(data, sizeof(struct diag *)*length); 
+
+  free(sim_thr_pred_pos);
+  free(scores);
+  free(score_sum);
   free(pool_diags); 
   free(dyn_diags); 
   free_diag(dg); 
