@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="museq.cpp">
+    <ClCompile Include="align.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="windows_port\getopt.cpp">

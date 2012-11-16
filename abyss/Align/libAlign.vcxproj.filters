@@ -15,15 +15,27 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="museq.cpp">
+    <ClCompile Include="dialign.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="windows_port\getopt.cpp">
+    <ClCompile Include="smith_waterman.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="alignGlobal.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dna_diag_prob.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="windows_port\getopt.h">
+    <ClInclude Include="alignGlobal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dialign.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="smith_waterman.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

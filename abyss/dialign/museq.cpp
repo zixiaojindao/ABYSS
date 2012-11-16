@@ -39,6 +39,8 @@
 //		 struct prob_dist *pdist);
 //extern struct diag_col *create_diag_col(int seq_amount);
 extern void free_diag_col(struct diag_col* dcol);
+extern void free_diag(struct diag* dg);
+extern void free_alignment(struct alignment *algn);
 extern struct diag_col *find_all_diags(struct scr_matrix *smatrix, 
 				struct prob_dist *pdist, 
 				struct seq_col *in_seq_col, struct alignment *algn, int round);
@@ -53,7 +55,7 @@ extern struct prob_dist* calc_score_dist(struct scr_matrix *smatrix, int mxdlen)
 // alig.c
 extern struct alignment* create_empty_alignment(struct seq_col *scol);
 //extern char adapt_diag(struct alignment *algn, struct scr_matrix *smatrix, struct diag* dg);
-extern int  simple_aligner(struct seq_col *scol, struct diag_col *dcol, 
+extern char simple_aligner(struct seq_col *scol, struct diag_col *dcol, 
 			    struct scr_matrix* smatrix, 
 			    struct prob_dist *pdist, 
 		     struct alignment *algn, int round);
