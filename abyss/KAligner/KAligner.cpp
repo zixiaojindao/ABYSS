@@ -24,7 +24,8 @@
 #include <sstream>
 #include <string>
 #include <sys/stat.h>
-#include <sys/time.h>
+#include <localtime.h>
+//#include <sys/time.h>
 
 using namespace std;
 
@@ -104,11 +105,12 @@ static size_t countKmer(const string& path)
 		exit(EXIT_FAILURE);
 	}
 
-	if (!S_ISREG(st.st_mode)) {
+	//comment by Sun Zhao(zixiaojindao@gmail.com) for no S_ISREG on windows
+	/*if (!S_ISREG(st.st_mode)) {
 		cerr << "Not calculating k-mer in `" << path
 			<< "', because it is not a regular file.\n";
 		return 500000000;
-	}
+	}*/ 
 
 	if (opt::verbose > 0)
 		cerr << "Reading target `" << path << "'..." << endl;

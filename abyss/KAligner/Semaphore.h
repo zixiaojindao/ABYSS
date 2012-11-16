@@ -1,5 +1,5 @@
-#ifndef SEMAPHORE_H
-#define SEMAPHORE_H 1
+#ifndef _LSEMAPHORE_H
+#define _LSEMAPHORE_H 1
 
 /** Semaphore class needed since some OS' do not support unnamed
  * semaphores. */
@@ -45,7 +45,7 @@ class Semaphore {
 	pthread_cond_t m_cv;
 };
 #else
-# include <semaphore.h>
+# include "windows_port\semaphore.h"
 # include <cerrno>
 # include <cstring> // for strerror
 class Semaphore {

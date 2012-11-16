@@ -19,9 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{0B941631-1BA7-419E-A524-6E45B23294FB}</ProjectGuid>
+    <ProjectGuid>{DB6B3DDC-04A4-4BDE-9C49-EF8320878E1D}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <ProjectName>libCommon</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -30,7 +29,7 @@
     <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
@@ -66,13 +65,15 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>..\bin</OutDir>
-    <IntDir>..\bin\libCommon_tmp</IntDir>
+    <IntDir>..\bin\DistanceEst_tmp</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>..\bin</OutDir>
+    <IntDir>..\bin\DistanceEst_tmp</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -95,11 +96,12 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Common;..;.;windows_port;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>..\bin\libCommon.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -123,68 +125,24 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalIncludeDirectories>../Common;..;.;windows_port;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>..\bin\libCommon.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="city.cc" />
-    <ClCompile Include="ContigID.cpp" />
-    <ClCompile Include="Fcontrol.cpp" />
-    <ClCompile Include="Histogram.cpp" />
-    <ClCompile Include="Kmer.cpp" />
-    <ClCompile Include="Log.cpp" />
-    <ClCompile Include="Options.cpp" />
-    <ClCompile Include="SeqExt.cpp" />
-    <ClCompile Include="Sequence.cpp" />
-    <ClCompile Include="SignalHandler.cpp" />
-    <ClCompile Include="Timer.cpp" />
-    <ClCompile Include="Uncompress.cpp" />
-    <ClCompile Include="windows_port\localmath.cpp" />
-    <ClCompile Include="windows_port\localmemory.cpp" />
-    <ClCompile Include="windows_port\utility.cpp" />
+    <ClCompile Include="DistanceEst.cpp" />
+    <ClCompile Include="MLE.cpp" />
+    <ClCompile Include="windows_port\getopt.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Algorithms.h" />
-    <ClInclude Include="Alignment.h" />
-    <ClInclude Include="BitUtil.h" />
-    <ClInclude Include="cholesky.hpp" />
-    <ClInclude Include="city.h" />
-    <ClInclude Include="ConstString.h" />
-    <ClInclude Include="ContigID.h" />
-    <ClInclude Include="ContigNode.h" />
-    <ClInclude Include="ContigPath.h" />
-    <ClInclude Include="ContigProperties.h" />
-    <ClInclude Include="Dictionary.h" />
-    <ClInclude Include="Estimate.h" />
-    <ClInclude Include="Fcontrol.h" />
-    <ClInclude Include="Functional.h" />
-    <ClInclude Include="HashFunction.h" />
-    <ClInclude Include="Histogram.h" />
-    <ClInclude Include="IOUtil.h" />
-    <ClInclude Include="Iterator.h" />
-    <ClInclude Include="Kmer.h" />
-    <ClInclude Include="Log.h" />
-    <ClInclude Include="MemoryUtil.h" />
-    <ClInclude Include="Options.h" />
-    <ClInclude Include="PMF.h" />
-    <ClInclude Include="SAM.h" />
-    <ClInclude Include="Sense.h" />
-    <ClInclude Include="SeqExt.h" />
-    <ClInclude Include="Sequence.h" />
-    <ClInclude Include="SignalHandler.h" />
-    <ClInclude Include="StringUtil.h" />
-    <ClInclude Include="SuffixArray.h" />
-    <ClInclude Include="Timer.h" />
-    <ClInclude Include="Uncompress.h" />
-    <ClInclude Include="UnorderedMap.h" />
-    <ClInclude Include="windows_port\localmath.h" />
-    <ClInclude Include="windows_port\localmemory.h" />
-    <ClInclude Include="windows_port\utility.h" />
+    <ClInclude Include="MLE.h" />
+    <ClInclude Include="windows_port\getopt.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
