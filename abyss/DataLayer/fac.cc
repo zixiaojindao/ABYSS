@@ -8,7 +8,7 @@
 #include "DataLayer/FastaReader.h"
 #include "DataLayer/Options.h"
 #include <algorithm>
-#include "windows_port\getopt.h"
+#include <getopt.h>
 #include <iostream>
 #include <sstream>
 

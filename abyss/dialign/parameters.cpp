@@ -13,7 +13,7 @@
 #include <string.h>
 #include <float.h>
 //#include <unistd.h>
-#include "windows_port\getopt.h"
+#include <getopt.h>
 #include "parameters.h"
 #include "struct.h"
 #include "io.h"

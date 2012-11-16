@@ -10,7 +10,7 @@
 #include <algorithm>
 #include <cassert>
 #include <cstdlib>
-#include "windows_port\getopt.h"
+#include <getopt.h>
 #include <iostream>
 #include <sstream>
 

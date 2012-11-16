@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{96A01DEC-7F31-4BBD-8616-A24BFC52CF36}</ProjectGuid>
+    <ProjectGuid>{D3A72791-6FF8-4A07-8D6F-4DE67C569F6F}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -61,19 +61,19 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>..\bin</OutDir>
+    <IntDir>..\bin\ABYSS_tmp</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\bin</OutDir>
-    <IntDir>..\bin\abyss-align_tmp</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>..\bin</OutDir>
+    <IntDir>..\bin\ABYSS_tmp</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\bin</OutDir>
-    <IntDir>..\bin\abyss-align_tmp</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -82,11 +82,13 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>../DataLayer;../Common;../Assembly;..;.;windows_port;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <TargetMachine>MachineX86</TargetMachine>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>..\bin\libAssembly.lib;..\bin\libDataLayer.lib;..\bin\libCommon.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -96,12 +98,12 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../DataLayer;../Common;..;.;windows_port;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../DataLayer;../Common;../Assembly;..;.;windows_port;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>..\bin\libAlign.lib;..\bin\libdialign.lib;..\bin\libCommon.lib;..\bin\libDataLayer.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\bin\libAssembly.lib;..\bin\libDataLayer.lib;..\bin\libCommon.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -110,6 +112,7 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalIncludeDirectories>../DataLayer;../Common;../Assembly;..;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <TargetMachine>MachineX86</TargetMachine>
@@ -117,6 +120,7 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>..\bin\libAssembly.lib;..\bin\libDataLayer.lib;..\bin\libCommon.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -125,22 +129,40 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>../DataLayer;../Common;..;.;windows_port;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../DataLayer;../Common;../Assembly;..;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>..\bin\libalign.lib;..\bin\libdialign.lib;..\bin\Common.lib;..\bin\DataLayer.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\bin\libAssembly.lib;..\bin\libDataLayer.lib;..\bin\libCommon.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="align.cpp" />
+    <ClCompile Include="Abyss.cpp" />
     <ClCompile Include="windows_port\getopt.cpp" />
+    <ClCompile Include="windows_port\localmath.cpp" />
+    <ClCompile Include="windows_port\localmemory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="windows_port\getopt.h" />
+    <ClInclude Include="windows_port\google\sparsehash\densehashtable.h" />
+    <ClInclude Include="windows_port\google\sparsehash\hashtable-common.h" />
+    <ClInclude Include="windows_port\google\sparsehash\libc_allocator_with_realloc.h" />
+    <ClInclude Include="windows_port\google\sparsehash\sparseconfig.h" />
+    <ClInclude Include="windows_port\google\sparsehash\sparsehashtable.h" />
+    <ClInclude Include="windows_port\google\template_util.h" />
+    <ClInclude Include="windows_port\google\type_traits.h" />
+    <ClInclude Include="windows_port\localmath.h" />
+    <ClInclude Include="windows_port\localmemory.h" />
+    <ClInclude Include="windows_port\sparsehash\internal\densehashtable.h" />
+    <ClInclude Include="windows_port\sparsehash\internal\hashtable-common.h" />
+    <ClInclude Include="windows_port\sparsehash\internal\libc_allocator_with_realloc.h" />
+    <ClInclude Include="windows_port\sparsehash\internal\sparseconfig.h" />
+    <ClInclude Include="windows_port\sparsehash\internal\sparsehashtable.h" />
+    <ClInclude Include="windows_port\sparsehash\template_util.h" />
+    <ClInclude Include="windows_port\sparsehash\type_traits.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

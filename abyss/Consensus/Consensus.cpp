@@ -13,6 +13,7 @@
 #include <numeric>
 #include <sstream>
 #include <string>
+#include <boost/math/special_functions/fpclassify.hpp> 
 
 using namespace std;
 
@@ -391,7 +392,7 @@ static void consensus(const string& outPath, const string& pileupPath)
 			// write the contig to file.
 			float percentAgreement
 				= sumBest / (float)(sumBest + sumSecond);
-			if (isnan(percentAgreement) || percentAgreement < .9) {
+			if (boost::math::isnan(percentAgreement) || percentAgreement < .9) {
 				numIgnored++;
 				if (opt::csToNt) {
 					if (opt::verbose > 0)

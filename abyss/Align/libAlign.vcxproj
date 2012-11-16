@@ -94,12 +94,15 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../Common;..;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Common;..;.;windows_port;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
     </Link>
+    <Lib>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -131,15 +134,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="alignGlobal.cc" />
+    <ClCompile Include="alignGlobal.cpp" />
     <ClCompile Include="dialign.cpp" />
-    <ClCompile Include="dna_diag_prob.cc" />
+    <ClCompile Include="dna_diag_prob.cpp" />
     <ClCompile Include="smith_waterman.cpp" />
+    <ClCompile Include="windows_port\getopt.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="alignGlobal.h" />
     <ClInclude Include="dialign.h" />
     <ClInclude Include="smith_waterman.h" />
+    <ClInclude Include="windows_port\getopt.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

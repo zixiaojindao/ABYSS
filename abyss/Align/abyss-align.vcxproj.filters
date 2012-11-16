@@ -15,10 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="align.cc">
+    <ClCompile Include="windows_port\getopt.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="windows_port\getopt.cpp">
+    <ClCompile Include="align.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
