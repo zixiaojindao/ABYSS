@@ -142,7 +142,8 @@ int longestPath(const Graph& g, const Bubble& topo)
 			it != topo.end(); ++it) {
 		V u = *it;
 		Eit eit, elast;
-		for (tie(eit, elast) = out_edges(u, g); eit != elast; ++eit) {
+		//add boost:: before tie by Sun Zhao(zixiaojindao@gmail.com)
+		for (boost::tie(eit, elast) = out_edges(u, g); eit != elast; ++eit) {
 			E e = *eit;
 			V v = target(e, g);
 			distance[v] = std::max(

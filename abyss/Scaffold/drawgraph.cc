@@ -185,7 +185,8 @@ int main(int argc, char** argv)
 
 	// Build the information matrix.
 	Eit eit, elast;
-	for (tie(eit, elast) = edges(g); eit != elast; ++eit) {
+	//add boost:: by Sun Zhao(zixiaojindao@gmail.com)
+	for (boost::tie(eit, elast) = edges(g); eit != elast; ++eit) {
 		E e = *eit;
 		V u = source(e, g);
 		V v = target(e, g);
@@ -208,7 +209,8 @@ int main(int argc, char** argv)
 	// Output the coordinates of each contig.
 	if (opt::verbose > 1) {
 		Vit uit, ulast;
-		for (tie(uit, ulast) = vertices(g); uit != ulast; ++uit) {
+	//add boost:: by Sun Zhao(zixiaojindao@gmail.com)
+		for (boost::tie(uit, ulast) = vertices(g); uit != ulast; ++uit) {
 			V u = *uit;
 			size_t ui = get(vertex_index, g, u);
 			ssize_t x1 = (ssize_t)b[ui];
@@ -222,7 +224,8 @@ int main(int argc, char** argv)
 	std::vector< std::pair<double, V> > sorted;
 	sorted.reserve(n);
 	Vit uit, ulast;
-	for (tie(uit, ulast) = vertices(g); uit != ulast; ++uit) {
+	//add boost:: by Sun Zhao(zixiaojindao@gmail.com)
+	for (boost::tie(uit, ulast) = vertices(g); uit != ulast; ++uit) {
 		V u = *uit;
 		size_t ui = get(vertex_index, g, u);
 		sorted.push_back(std::make_pair(b[ui], u));
@@ -258,7 +261,8 @@ int main(int argc, char** argv)
 	}
 
 	// Write the edges.
-	for (tie(eit, elast) = edges(g); eit != elast; ++eit)
+	//add boost:: by Sun Zhao(zixiaojindao@gmail.com)
+	for (boost::tie(eit, elast) = edges(g); eit != elast; ++eit)
 		cout << get(edge_name, g, *eit) << '\n';
 
 	cout << "}\n";

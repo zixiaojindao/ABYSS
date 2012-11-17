@@ -19,9 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{C86BDC0F-BAA8-43FA-B952-0A7597C732F1}</ProjectGuid>
+    <ProjectGuid>{CCD2B488-0ED9-4053-ADB7-E65427BDBCFB}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <ProjectName>abyss-fixmate</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -66,7 +65,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>..\bin</OutDir>
-    <IntDir>..\bin\abyss-fixmate_tmp</IntDir>
+    <IntDir>..\bin\abyss-junction_tmp</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>true</LinkIncremental>
@@ -74,7 +73,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>..\bin</OutDir>
-    <IntDir>..\bin\abyss-fixmate_tmp</IntDir>
+    <IntDir>..\bin\abyss-junction_tmp</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -137,13 +136,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="abyss-fixmate.cc" />
+    <ClCompile Include="junction.cc" />
     <ClCompile Include="windows_port\getopt.cpp" />
-    <ClCompile Include="windows_port\localmath.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="windows_port\getopt.h" />
-    <ClInclude Include="windows_port\localmath.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

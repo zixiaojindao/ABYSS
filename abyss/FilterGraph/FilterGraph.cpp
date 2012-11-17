@@ -177,7 +177,8 @@ static bool removable(const Graph* pg, vertex_descriptor v)
 
 	// Check if self adjacent
 	OEit oei0, oei1;
-	tie(oei0, oei1) = out_edges(v, g);
+	//add boost:: by Sun Zhao(zixiaojindao@gmail.com)
+	boost::tie(oei0, oei1) = out_edges(v, g);
 	for (OEit vw = oei0; vw != oei1; ++vw) {
 		V w = target(*vw, g);
 		V vc = get(vertex_complement, g, v);
@@ -190,7 +191,8 @@ static bool removable(const Graph* pg, vertex_descriptor v)
 	// Check that removing the contig will result in adjacent contigs
 	// overlapping by at least opt::minOverlap.
 	IEit iei0, iei1;
-	tie(iei0, iei1) = in_edges(v, g);
+	//add boost:: by Sun Zhao(zixiaojindao@gmail.com)
+	boost::tie(iei0, iei1) = in_edges(v, g);
 	IEit maxuv = iei0;
 	for (IEit uv = iei0; uv != iei1; ++uv)
 		if (g[*maxuv].distance < g[*uv].distance)
@@ -230,9 +232,11 @@ static bool findNewEdges(const Graph& g, vertex_descriptor v,
 	typedef GTraits::in_edge_iterator IEit;
 
 	IEit iei0, iei1;
-	tie(iei0, iei1) = in_edges(v, g);
+	//add boost:: by Sun Zhao(zixiaojindao@gmail.com)
+	boost::tie(iei0, iei1) = in_edges(v, g);
 	OEit oei0, oei1;
-	tie(oei0, oei1) = out_edges(v, g);
+	//add boost:: by Sun Zhao(zixiaojindao@gmail.com)
+	boost::tie(oei0, oei1) = out_edges(v, g);
 
 	vector<V> marked;
 
@@ -337,9 +341,10 @@ static void findShortContigs(const Graph& g, const vector<bool>& seen,
 	typedef graph_traits<Graph> GTraits;
 	typedef GTraits::vertex_iterator Vit;
 	Vit first, second;
-	tie(first, second) = vertices(g);
+	//add boost:: by Sun Zhao(zixiaojindao@gmail.com)
+	boost::tie(first, second) = vertices(g);
 	copy_if(first, second, back_inserter(sc),
-			!bind(Marked(g, seen), _1) && bind(removable, &g, _1));
+		!boost::lambda::bind(Marked(g, seen), _1) && bind(removable, &g, _1));
 }
 
 /** Functor used for sorting contigs based on degree, then size,
@@ -410,7 +415,8 @@ static void removeShortContigs(Graph& g, const vector<bool>& seen)
 	typedef GTraits::vertex_iterator Vit;
 	typedef GTraits::vertex_descriptor V;
 	Vit first, second;
-	tie(first, second) = vertices(g);
+	//add boost:: by Sun Zhao(zixiaojindao@gmail.com)
+	boost::tie(first, second) = vertices(g);
 	vector<V> sc;
 	copy_if(first, second, back_inserter(sc),
 			ShorterThanX(g, seen, opt::minLen));

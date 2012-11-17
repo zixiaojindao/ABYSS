@@ -186,8 +186,9 @@ int main(int argc, char** argv)
 
 	ScaffoldGraph scaffoldG(overlapG.num_vertices() / 2);
 	if (optind < argc) {
+	//add boost:: by Sun Zhao(zixiaojindao@gmail.com)
 		for_each(argv + optind, argv + argc,
-				bind(readGraph, _1, ref(scaffoldG)));
+			boost::lambda::bind(readGraph, _1, boost::ref(scaffoldG)));
 		// Add any missing complementary edges.
 		size_t numAdded = addComplementaryEdges(scaffoldG);
 		if (opt::verbose > 0)
@@ -207,7 +208,8 @@ int main(int argc, char** argv)
 
 	// Extend the junction contigs.
 	graph_traits<OverlapGraph>::vertex_iterator uit, ulast;
-	for (tie(uit, ulast) = vertices(overlapG); uit != ulast; ++uit)
+	//add boost:: by Sun Zhao(zixiaojindao@gmail.com)
+	for (boost::tie(uit, ulast) = vertices(overlapG); uit != ulast; ++uit)
 		if (!seen[get(vertex_contig_index, overlapG, *uit)])
 			extendJunction(overlapG, scaffoldG, *uit);
 

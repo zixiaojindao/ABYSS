@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PathOverlap", "PathOverlap.vcxproj", "{7B664ECF-EF67-49A0-91D4-9CD73D4F70FB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7B664ECF-EF67-49A0-91D4-9CD73D4F70FB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7B664ECF-EF67-49A0-91D4-9CD73D4F70FB}.Debug|Win32.Build.0 = Debug|Win32
+		{7B664ECF-EF67-49A0-91D4-9CD73D4F70FB}.Release|Win32.ActiveCfg = Release|Win32
+		{7B664ECF-EF67-49A0-91D4-9CD73D4F70FB}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

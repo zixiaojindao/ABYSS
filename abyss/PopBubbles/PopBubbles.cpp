@@ -272,16 +272,17 @@ static float getAlignmentIdentity(const Graph& g,
 {
 	unsigned nbranches = distance(first, last);
 	vector<int> inDists(nbranches);
+	//add boost:: before cref by Sun Zhao(zixiaojindao@gmail.com)
 	transform(first, last, inDists.begin(),
-			bind(getDistance, cref(g), t, _1));
+			bind(getDistance, boost::cref(g), t, _1));
 	vector<int> outDists(nbranches);
 	transform(first, last, outDists.begin(),
-			bind(getDistance, cref(g), _1, v));
+			bind(getDistance, boost::cref(g), _1, v));
 	vector<int> insertLens(nbranches);
 	transform(first, last, insertLens.begin(),
-			bind(getDistance, cref(g), t, _1)
+			bind(getDistance, boost::cref(g), t, _1)
 				+ bind(getLength, &g, _1)
-				+ bind(getDistance, cref(g), _1, v));
+				+ bind(getDistance, boost::cref(g), _1, v));
 
 	int max_in_overlap = -(*min_element(inDists.begin(),
 			inDists.end()));
@@ -311,7 +312,8 @@ static float getAlignmentIdentity(const Graph& g,
 	}
 
 	unsigned matches, consensusSize;
-	tie(matches, consensusSize) = align(seqs);
+	//add boost:: before tie by Sun Zhao(zixiaojindao@gmail.com)
+	boost::tie(matches, consensusSize) = align(seqs);
 	return (float)(matches + max_in_overlap + max_out_overlap) /
 		(consensusSize + max_in_overlap + max_out_overlap);
 }
@@ -448,7 +450,8 @@ static int longestPath(const Graph& g, const Bubble& topo)
 			it != topo.end(); ++it) {
 		V u = *it;
 		Eit eit, elast;
-		for (tie(eit, elast) = out_edges(u, g); eit != elast; ++eit) {
+		//add boost:: before tie by Sun Zhao(zixiaojindao@gmail.com)
+		for (boost::tie(eit, elast) = out_edges(u, g); eit != elast; ++eit) {
 			E e = *eit;
 			V v = target(e, g);
 			distance[v] = max(distance[v], distance[u] + weight[e]);

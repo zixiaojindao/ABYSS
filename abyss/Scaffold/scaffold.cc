@@ -25,6 +25,7 @@
 #include <sstream>
 #include <string>
 #include <utility>
+#include <boost/math/special_functions/fpclassify.hpp> 
 
 using namespace std;
 using namespace std::rel_ops;
@@ -164,7 +165,8 @@ static void removeCycles(Graph& g)
 	// Identify the cycles.
 	vector<E> cycles;
 	Eit eit, elast;
-	for (tie(eit, elast) = edges(g); eit != elast; ++eit) {
+	//add boost:: before tie by Sun Zhao(zixiaojindao@gmail.com)
+	for (boost::tie(eit, elast) = edges(g); eit != elast; ++eit) {
 		E e = *eit;
 		if (isCycle(g, e))
 			cycles.push_back(e);
@@ -268,7 +270,8 @@ static void removeRepeats(Graph& g)
 		// Iterate through the transitive edges, u->w1.
 		V u = source(*it, g), w1 = target(*it, g);
 		Ait vit, vlast;
-		for (tie(vit, vlast) = adjacent_vertices(u, g);
+	//add boost:: before tie by Sun Zhao(zixiaojindao@gmail.com)
+		for (boost::tie(vit, vlast) = adjacent_vertices(u, g);
 				vit != vlast; ++vit) {
 			V v = *vit;
 			assert(u != v); // no self loops
@@ -276,7 +279,8 @@ static void removeRepeats(Graph& g)
 				continue;
 			// u->w1 is a transitive edge spanning u->v->w1.
 			Ait wit, wlast;
-			for (tie(wit, wlast) = adjacent_vertices(v, g);
+	//add boost:: before tie by Sun Zhao(zixiaojindao@gmail.com)
+			for (boost::tie(wit, wlast) = adjacent_vertices(v, g);
 					wit != wlast; ++wit) {
 				// For each edge v->w2, check that an edge
 				// w1->w2 or w2->w1 exists. If not, v is a repeat.
@@ -341,14 +345,16 @@ static void removeWeakEdges(Graph& g)
 
 	vector<E> weak;
 	Eit eit, elast;
-	for (tie(eit, elast) = edges(g); eit != elast; ++eit) {
+	//add boost:: before tie by Sun Zhao(zixiaojindao@gmail.com)
+	for (boost::tie(eit, elast) = edges(g); eit != elast; ++eit) {
 		E u1v2 = *eit;
 		V u1 = source(u1v2, g), v2 = target(u1v2, g);
 		if (out_degree(u1, g) != 2 || in_degree(v2, g) != 2)
 			continue;
 
 		Oit oit, olast;
-		tie(oit, olast) = out_edges(u1, g);
+	//add boost:: before tie by Sun Zhao(zixiaojindao@gmail.com)
+		boost::tie(oit, olast) = out_edges(u1, g);
 		E u1v1;
 		if (target(*oit, g) == v2) {
 			++oit;
@@ -364,7 +370,8 @@ static void removeWeakEdges(Graph& g)
 			continue;
 
 		Iit iit, ilast;
-		tie(iit, ilast) = in_edges(v2, g);
+	//add boost:: before tie by Sun Zhao(zixiaojindao@gmail.com)
+		boost::tie(iit, ilast) = in_edges(v2, g);
 		E u2v2;
 		if (source(*iit, g) == u1) {
 			++iit;
@@ -494,7 +501,8 @@ static Histogram buildScaffoldLengthHistogram(
 	// Clear the removed flag.
 	typedef graph_traits<Graph>::vertex_iterator Vit;
 	Vit uit, ulast;
-	for (tie(uit, ulast) = vertices(g); uit != ulast; ++uit)
+	//add boost:: before tie by Sun Zhao(zixiaojindao@gmail.com)
+	for (boost::tie(uit, ulast) = vertices(g); uit != ulast; ++uit)
 		put(vertex_removed, g, *uit, false);
 
 	// Remove the vertices that are used in paths
@@ -507,7 +515,8 @@ static Histogram buildScaffoldLengthHistogram(
 	}
 
 	// Add the contigs that were not used in paths.
-	for (tie(uit, ulast) = vertices(g); uit != ulast; ++++uit) {
+	//add boost:: before tie by Sun Zhao(zixiaojindao@gmail.com)
+	for (boost::tie(uit, ulast) = vertices(g); uit != ulast; ++++uit) {
 		typedef graph_traits<Graph>::vertex_descriptor V;
 		V u = *uit;
 		if (!get(vertex_removed, g, u))
@@ -712,17 +721,17 @@ int main(int argc, char** argv)
 
 	// Find the value of s that maximizes the scaffold N50.
 	unsigned bests = 0, bestN50 = 0;
-	const double STEP = cbrt(10); // Three steps per decade.
-	unsigned ilast = (unsigned)round(
+	const double STEP = boost::math::cbrt(10); // Three steps per decade.
+	unsigned ilast = (unsigned)boost::math::round(
 			log(opt::minContigLengthEnd) / log(STEP));
-	for (unsigned i = (unsigned)round(
+	for (unsigned i = (unsigned)boost::math::round(
 				log(opt::minContigLength) / log(STEP));
 			i <= ilast; ++i) {
 		unsigned s = (unsigned)pow(STEP, (int)i);
 
 		// Round to 1 figure.
 		double nearestDecade = pow(10, floor(log10(s)));
-		s = unsigned(round(s / nearestDecade) * nearestDecade);
+		s = unsigned(boost::math::round(s / nearestDecade) * nearestDecade);
 
 		unsigned n50 = scaffold(g, s, false);
 		if (opt::verbose > 0)
