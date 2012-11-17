@@ -433,8 +433,9 @@ int main(int argc, char** argv)
 		if (opt::verbose > 0)
 			printGraphStats(cout, scaffoldGraph);
 		remove_edge_if(
-				!bind(checkEdgeForOverlap,
-					cref(graph), ref(scaffoldGraph), _1),
+			//add boost:: prefix before bind cref and ref by Sun Zhao(zixiaojindao@gmail.com)
+			!boost::lambda::bind(checkEdgeForOverlap,
+					boost::cref(graph), boost::ref(scaffoldGraph), _1),
 				static_cast<OverlapGraph::base_type&>(scaffoldGraph));
 	} else {
 		// dist graph format

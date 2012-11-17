@@ -25,14 +25,16 @@ void depthFirstSearch(const Graph& g, Visitor vis, ColorMap color)
 
 	// Initialize the vertices.
 	Vit uit, ulast;
-	for (tie(uit, ulast) = vertices(g); uit != ulast; ++uit) {
+	//add boost:: before tie by Sun Zhao(zixiaojindao@gmail.com)
+	for (boost::tie(uit, ulast) = vertices(g); uit != ulast; ++uit) {
 		V u = *uit;
 		put(color, u, white);
 		vis.initialize_vertex(u, g);
 	}
 
 	// Visit vertices with deg-(u) = 0.
-	for (tie(uit, ulast) = vertices(g); uit != ulast; ++uit) {
+	//add boost:: before tie by Sun Zhao(zixiaojindao@gmail.com)
+	for (boost::tie(uit, ulast) = vertices(g); uit != ulast; ++uit) {
 		V u = *uit;
 		if (get(color, u) == white && in_degree(u, g) == 0) {
 			vis.start_vertex(u, g);
@@ -42,7 +44,8 @@ void depthFirstSearch(const Graph& g, Visitor vis, ColorMap color)
 	}
 
 	// Visit vertices where discontiguous-(u).
-	for (tie(uit, ulast) = vertices(g); uit != ulast; ++uit) {
+	//add boost:: before tie by Sun Zhao(zixiaojindao@gmail.com)
+	for (boost::tie(uit, ulast) = vertices(g); uit != ulast; ++uit) {
 		V u = *uit;
 		if (get(color, u) == white && !contiguous_in(g, u)) {
 			vis.start_vertex(u, g);
@@ -52,7 +55,8 @@ void depthFirstSearch(const Graph& g, Visitor vis, ColorMap color)
 	}
 
 	// Visit the remaining vertices.
-	for (tie(uit, ulast) = vertices(g); uit != ulast; ++uit) {
+	//add boost:: before tie by Sun Zhao(zixiaojindao@gmail.com)
+	for (boost::tie(uit, ulast) = vertices(g); uit != ulast; ++uit) {
 		V u = *uit;
 		if (get(color, u) == white) {
 			vis.start_vertex(u, g);

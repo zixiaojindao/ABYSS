@@ -15,6 +15,7 @@
 #include <fstream>
 #include <functional>
 #include <getopt.h>
+#include <localmath.h>
 #include <iomanip>
 #include <iostream>
 #include <iterator>
@@ -274,7 +275,7 @@ static void generateDistFile()
 					= mapIt->second.estimates[refIsRC].begin();
 					vecIt != mapIt->second.estimates[refIsRC].end(); ++vecIt) {
 				vecIt->second.distance
-					= (int)round((double)vecIt->second.distance /
+					= (int)roundf((double)vecIt->second.distance /
 							(double)vecIt->second.numPairs);
 				if (vecIt->second.numPairs >= opt::c
 						&& vecIt->second.numPairs != 0

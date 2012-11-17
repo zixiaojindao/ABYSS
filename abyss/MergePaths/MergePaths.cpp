@@ -1375,7 +1375,8 @@ static ContigPath align(const Lengths& lengths,
 			|| find(path2.begin(), path2.end(), pivot)
 				== path2.end()) {
 		bool good;
-		tie(pivot, good) = findPivot(path1, path2);
+		//add boost:: before tie by Sun Zhao(zixiaojindao@gmail.com)
+		boost::tie(pivot, good) = findPivot(path1, path2);
 		if (!good)
 			return ContigPath();
 	}
