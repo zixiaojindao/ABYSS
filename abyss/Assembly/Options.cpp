@@ -62,14 +62,19 @@ static const char USAGE_MESSAGE[] =
 "\n"
 "Report bugs to <" PACKAGE_BUGREPORT ">.\n";
 
+//modify kmerSize, kMin, kMax, kStep, trimLen, bubbleLen type from int to unsigned by Sun Zhao(zixiaojindao@gmail.com)
 /** k-mer length */
-int kmerSize = -1;
+//int kmerSize = -1;
+unsigned kmerSize = (unsigned)-1;
 int k; // used by Graph
 
 /** k-mer range */
-int kMin = -1;
-int kMax = -1;
-int kStep = 1;
+//int kMin = -1;
+//int kMax = -1;
+//int kStep = 1;
+unsigned kMin = (unsigned)-1;
+unsigned kMax = (unsigned)-1;
+unsigned kStep = (unsigned)1;
 
 /** erosion coverage */
 unsigned erode = (unsigned)-1;
@@ -78,13 +83,15 @@ unsigned erode = (unsigned)-1;
 unsigned erodeStrand = (unsigned)-1;
 
 /** trim length */
-int trimLen = -1;
+//int trimLen = -1;
+unsigned trimLen = (unsigned)-1;
 
 /** Coverage cutoff. */
 float coverage = -1;
 
 /** Pop bubbles shorter than N bp. */
-int bubbleLen = -1;
+//int bubbleLen = -1;
+unsigned bubbleLen = (unsigned)-1;
 
 /** coverage histogram path */
 string coverageHistPath;
@@ -124,7 +131,7 @@ static const struct option longopts[] = {
 	{ "coverage",    required_argument, NULL, 'c' },
 	{ "coverage-hist", required_argument, NULL, COVERAGE_HIST },
 	{ "bubble-length", required_argument, NULL, 'b' },
-	{ "no-bubbles",  no_argument,       &opt::bubbleLen, 0 },
+	{ "no-bubbles",  no_argument,       (int *)&opt::bubbleLen, 0 },
 	{ "erode",       required_argument, NULL, 'e' },
 	{ "erode-strand", required_argument, NULL, 'E' },
 	{ "no-erode",    no_argument,       (int*)&erode, 0 },
