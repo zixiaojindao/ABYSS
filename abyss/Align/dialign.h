@@ -1,7 +1,8 @@
 #ifndef DIALIGN_H
 #define DIALIGN_H 1
 
-extern "C" {
+//dialign project has been changed to C++ project by Sun Zhao(zixiaojindao@gmail.com)
+//extern "C" {
 #include "dialign/io.h"
 #include "dialign/parameters.h"
 #include "dialign/struct.h"
@@ -28,7 +29,7 @@ void prepare_alignment(struct alignment *algn);
 struct algn_pos *find_eqc(struct algn_pos **ap, int seqnum, int pos);
 void free_alignment(struct alignment* algn);
 void free_diag_col(struct diag_col* dcol);
-}
+//}
 
 #include <string>
 #include <vector>
