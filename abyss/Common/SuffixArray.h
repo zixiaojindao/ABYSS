@@ -75,6 +75,12 @@ class SuffixArray {
 		{
 			return a < b.first;
 		}
+		
+		//add this fuction for vs debug mode by Sun Zhao(zixiaojindao@gmail.com)
+		bool operator()(const value_type&a, const value_type& b) const
+		{
+			return a.first < b.first;
+		}
 	};
 
 	unsigned m_minOverlap;

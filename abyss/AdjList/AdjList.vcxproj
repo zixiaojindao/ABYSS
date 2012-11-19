@@ -137,6 +137,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AdjList.cpp" />
+    <ClCompile Include="windows_port\getopt.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="windows_port\getopt.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

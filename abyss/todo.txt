@@ -13,7 +13,7 @@ char simple_aligner(struct seq_col *scol, struct diag_col *dcol,
 声明不一致。
 3. 1和2有可能导致意外链接
 
-5.AdjList PopBubbles abyss-scaffold abyss-filtergraph complie error
+5.PopBubbles abyss-scaffold abyss-filtergraph complie error
 6.查找所有OpenMP先关的编译选项工程。
 7.可以使用#include <boost/math/special_functions/fpclassify.hpp> boost::math中的函数替换localmath
 8.查看是否可以使用boost的getopt以及其他可以替换local的东西。
