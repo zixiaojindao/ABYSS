@@ -9,7 +9,6 @@
 #include "SequenceCollection.h"
 #include "StringUtil.h"
 #include "Timer.h"
-#include "windows_port\localmath.h"
 #include <algorithm>
 #include <cctype>
 #include <climits> // for UINT_MAX
@@ -17,6 +16,7 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include <boost/math/special_functions/round.hpp>
 
 using namespace std;
 
@@ -958,7 +958,7 @@ static float calculateCoverageThreshold(const Histogram& h)
 	}
 
 	for (unsigned iteration = 0; iteration < 100; iteration++) {
-		Histogram trimmed = h.trimLow((unsigned)roundf(cov));
+		Histogram trimmed = h.trimLow((unsigned)boost::math::round(cov));
 		if (opt::rank <= 0)
 			logger(1) << "Coverage: " << cov << "\t"
 				"Reconstruction: " << trimmed.size() << endl;
@@ -969,7 +969,7 @@ static float calculateCoverageThreshold(const Histogram& h)
 			// The coverage threshold has converged.
 			if (opt::rank <= 0)
 				cout << "Using a coverage threshold of "
-					<< (unsigned)roundf(cov) << "...\n"
+					<< (unsigned)boost::math::round(cov) << "...\n"
 					"The median k-mer coverage is " << median << "\n"
 					"The reconstruction is " << trimmed.size()
 					<< endl;
@@ -1007,7 +1007,7 @@ void setCoverageParameters(const Histogram& h)
 		minCov = 2;
 
 	if ((int)opt::erode < 0) {
-		opt::erode = (unsigned)roundf(minCov);
+		opt::erode = (unsigned)boost::math::round(minCov);
 		if (opt::rank <= 0)
 			cout << "Setting parameter e (erode) to "
 				<< opt::erode << endl;

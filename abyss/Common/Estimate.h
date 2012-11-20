@@ -5,7 +5,6 @@
 #include "ContigNode.h"
 #include "Graph/Options.h" // for opt::k
 #include "IOUtil.h"
-#include "windows_port\localmath.h"
 #include <cassert>
 #include <cmath> // for ceilf
 #include <iomanip>
@@ -15,6 +14,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <boost/math/special_functions/round.hpp>
 
 namespace opt {
 	/** The acceptable error of a distance estimate. */
@@ -112,7 +112,7 @@ struct MergeDistanceEst
 		int x1 = a.distance, x2 = b.distance;
 		double v1 = a.stdDev * a.stdDev, v2 = b.stdDev * b.stdDev;
 		DistanceEst x;
-		x.distance = (int)roundf((x1 * v2 + x2 * v1) / (v1 + v2));
+		x.distance = (int)boost::math::round((x1 * v2 + x2 * v1) / (v1 + v2));
 		x.stdDev = sqrt(v1 * v2 / (v1 + v2));
 		x.numPairs = a.numPairs + b.numPairs;
 		return x;
