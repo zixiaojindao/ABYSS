@@ -343,8 +343,8 @@ static void findShortContigs(const Graph& g, const vector<bool>& seen,
 	Vit first, second;
 	//add boost:: by Sun Zhao(zixiaojindao@gmail.com)
 	boost::tie(first, second) = vertices(g);
-	copy_if(first, second, back_inserter(sc),
-		!boost::lambda::bind(Marked(g, seen), _1) && bind(removable, &g, _1));
+	std::copy_if(first, second, back_inserter(sc),
+		!boost::lambda::bind(Marked(g, seen), _1) && boost::lambda::bind(removable, &g, _1));
 }
 
 /** Functor used for sorting contigs based on degree, then size,
@@ -418,7 +418,7 @@ static void removeShortContigs(Graph& g, const vector<bool>& seen)
 	//add boost:: by Sun Zhao(zixiaojindao@gmail.com)
 	boost::tie(first, second) = vertices(g);
 	vector<V> sc;
-	copy_if(first, second, back_inserter(sc),
+	std::copy_if(first, second, back_inserter(sc),
 			ShorterThanX(g, seen, opt::minLen));
 	remove_vertex_if(g, sc.begin(), sc.end(), True<V>());
 	transform(sc.begin(), sc.end(), back_inserter(g_removed),

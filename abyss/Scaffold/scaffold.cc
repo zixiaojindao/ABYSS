@@ -26,6 +26,8 @@
 #include <string>
 #include <utility>
 #include <boost/math/special_functions/fpclassify.hpp> 
+#include <boost/math/special_functions/cbrt.hpp>
+#include <boost/math/special_functions/round.hpp>
 
 using namespace std;
 using namespace std::rel_ops;
