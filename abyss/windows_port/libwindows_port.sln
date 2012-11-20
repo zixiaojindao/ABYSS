@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libwindows_port", "libwindows_port.vcxproj", "{2431757B-9238-4DDC-8F17-3632206FCB35}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2431757B-9238-4DDC-8F17-3632206FCB35}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2431757B-9238-4DDC-8F17-3632206FCB35}.Debug|Win32.Build.0 = Debug|Win32
+		{2431757B-9238-4DDC-8F17-3632206FCB35}.Release|Win32.ActiveCfg = Release|Win32
+		{2431757B-9238-4DDC-8F17-3632206FCB35}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -137,13 +137,11 @@
   <ItemGroup>
     <ClCompile Include="FastaReader.cpp" />
     <ClCompile Include="FastaWriter.cpp" />
-    <ClCompile Include="windows_port\localio.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FastaReader.h" />
     <ClInclude Include="FastaWriter.h" />
     <ClInclude Include="Options.h" />
-    <ClInclude Include="windows_port\localio.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

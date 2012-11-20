@@ -21,9 +21,6 @@
     <ClCompile Include="smith_waterman.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="windows_port\getopt.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="alignGlobal.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -39,9 +36,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="smith_waterman.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="windows_port\getopt.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

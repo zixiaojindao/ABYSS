@@ -58,7 +58,7 @@ static const char rcsid[]="$Id: getopt_long.c,v 1.1 2009/10/16 19:50:28 rodney E
 #include <err.h>
 #endif
 #include <errno.h>
-#include <getopt.h>
+#include "getopt.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>

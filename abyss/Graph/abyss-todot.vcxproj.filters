@@ -18,8 +18,5 @@
     <ClCompile Include="todot.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="windows_port\getopt.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

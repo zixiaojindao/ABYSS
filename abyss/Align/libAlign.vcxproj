@@ -96,7 +96,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../Common;..;.;windows_port;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Common;..;.;../windows_port;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -127,7 +127,7 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>../Common;..;.;windows_port;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Common;..;.;../windows_port;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -144,13 +144,11 @@
     <ClCompile Include="dialign.cpp" />
     <ClCompile Include="dna_diag_prob.cpp" />
     <ClCompile Include="smith_waterman.cpp" />
-    <ClCompile Include="windows_port\getopt.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="alignGlobal.h" />
     <ClInclude Include="dialign.h" />
     <ClInclude Include="smith_waterman.h" />
-    <ClInclude Include="windows_port\getopt.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

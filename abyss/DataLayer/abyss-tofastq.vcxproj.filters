@@ -18,19 +18,5 @@
     <ClCompile Include="abyss-tofastq.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="windows_port\getopt.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="windows_port\localio.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="windows_port\getopt.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="windows_port\localio.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>
