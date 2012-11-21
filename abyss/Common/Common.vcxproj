@@ -97,7 +97,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..;.;../windows_port;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -125,7 +125,7 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>..;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..;.;../windows_port;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -147,9 +147,6 @@
     <ClCompile Include="SignalHandler.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Uncompress.cpp" />
-    <ClCompile Include="windows_port\localmath.cpp" />
-    <ClCompile Include="windows_port\localmemory.cpp" />
-    <ClCompile Include="windows_port\utility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Algorithms.h" />
@@ -185,9 +182,6 @@
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Uncompress.h" />
     <ClInclude Include="UnorderedMap.h" />
-    <ClInclude Include="windows_port\localmath.h" />
-    <ClInclude Include="windows_port\localmemory.h" />
-    <ClInclude Include="windows_port\utility.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

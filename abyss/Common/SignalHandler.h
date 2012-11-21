@@ -1,6 +1,6 @@
 #ifndef SIGNALHANDLER_H
 #define SIGNALHANDLER_H 1
-#include "windows_port\utility.h"
+#include <localutility.h>
 void signalInit();
 
 #endif

@@ -51,15 +51,6 @@
     <ClCompile Include="city.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="windows_port\localmath.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="windows_port\utility.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="windows_port\localmemory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Algorithms.h">
@@ -159,15 +150,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cholesky.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="windows_port\localmath.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="windows_port\utility.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="windows_port\localmemory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

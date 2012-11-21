@@ -1,6 +1,6 @@
 #ifndef FCONTROL_H
 #define FCONTROL_H 1
-#include "windows_port\utility.h"
+#include <localutility.h>
 int setCloexec(int fd);
 
 #endif

@@ -98,7 +98,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..;../Common;../DataLayer;windows_port;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..;../Common;../DataLayer;../windows_port;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -126,7 +126,7 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>..;../Common;../DataLayer;windows_port;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..;../Common;../DataLayer;../windows_port;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -142,9 +142,6 @@
     <ClCompile Include="DotWriter.cpp" />
     <ClCompile Include="Options.cpp" />
     <ClCompile Include="SequenceCollection.cpp" />
-    <ClCompile Include="windows_port\getopt.cpp" />
-    <ClCompile Include="windows_port\localmath.cpp" />
-    <ClCompile Include="windows_port\localmemory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssemblyAlgorithms.h" />
@@ -155,23 +152,6 @@
     <ClInclude Include="KmerData.h" />
     <ClInclude Include="Options.h" />
     <ClInclude Include="SequenceCollection.h" />
-    <ClInclude Include="windows_port\getopt.h" />
-    <ClInclude Include="windows_port\google\sparsehash\densehashtable.h" />
-    <ClInclude Include="windows_port\google\sparsehash\hashtable-common.h" />
-    <ClInclude Include="windows_port\google\sparsehash\libc_allocator_with_realloc.h" />
-    <ClInclude Include="windows_port\google\sparsehash\sparseconfig.h" />
-    <ClInclude Include="windows_port\google\sparsehash\sparsehashtable.h" />
-    <ClInclude Include="windows_port\google\template_util.h" />
-    <ClInclude Include="windows_port\google\type_traits.h" />
-    <ClInclude Include="windows_port\localmath.h" />
-    <ClInclude Include="windows_port\localmemory.h" />
-    <ClInclude Include="windows_port\sparsehash\internal\densehashtable.h" />
-    <ClInclude Include="windows_port\sparsehash\internal\hashtable-common.h" />
-    <ClInclude Include="windows_port\sparsehash\internal\libc_allocator_with_realloc.h" />
-    <ClInclude Include="windows_port\sparsehash\internal\sparseconfig.h" />
-    <ClInclude Include="windows_port\sparsehash\internal\sparsehashtable.h" />
-    <ClInclude Include="windows_port\sparsehash\template_util.h" />
-    <ClInclude Include="windows_port\sparsehash\type_traits.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
