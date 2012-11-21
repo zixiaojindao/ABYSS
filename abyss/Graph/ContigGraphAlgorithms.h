@@ -262,9 +262,11 @@ OutputIt pruneTips_if(Graph& g, OutputIt result, Pred p)
 
 	/** Remove the tips. */
 	remove_vertex_if(g, tips.begin(), tips.end(), True<V>());
-	std::transform(tips.begin(), tips.end(), result,
-			std::mem_fun_ref(&ContigNode::contigIndex));
-
+	//replace transform with for loop by Sun Zhao(zixiaojindao@gmail.com) for debug cannot complie
+	//std::transform(tips.begin(), tips.end(), result,
+	//		std::mem_fun_ref(&ContigNode::contigIndex));
+	for(auto it = tips.begin(); it != tips.end(); ++it)
+		++result;
 	return result;
 }
 
