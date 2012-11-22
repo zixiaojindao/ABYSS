@@ -13,8 +13,12 @@
 #include <iostream>
 #include <mpi.h>
 #include <sstream>
-#include <unistd.h> // for gethostname
+//#include <unistd.h> // for gethostname
+#include <localunistd.h>
 #include <vector>
+#ifndef HOST_NAME_MAX
+#define HOST_NAME_MAX 256
+#endif
 
 using namespace std;
 
@@ -77,7 +81,7 @@ int main(int argc, char** argv)
 
 	MPI_Barrier(MPI_COMM_WORLD);
 	char hostname[HOST_NAME_MAX];
-	gethostname(hostname, sizeof hostname);
+	gethostnamelocal(hostname, sizeof hostname);
 	logger(0) << "Running on host " << hostname << endl;
 	MPI_Barrier(MPI_COMM_WORLD);
 

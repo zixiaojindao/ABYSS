@@ -15,42 +15,33 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="getopt.cpp">
+    <ClCompile Include="CommLayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="localmemory.cpp">
+    <ClCompile Include="MessageBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="localio.cpp">
+    <ClCompile Include="Messages.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="localtime.cpp">
+    <ClCompile Include="NetworkSequenceCollection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="localutility.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="localunistd.cpp">
+    <ClCompile Include="parallelAbyss.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="getopt.h">
+    <ClInclude Include="CommLayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="localmemory.h">
+    <ClInclude Include="MessageBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="localio.h">
+    <ClInclude Include="Messages.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="localtime.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="localutility.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="localunistd.h">
+    <ClInclude Include="NetworkSequenceCollection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

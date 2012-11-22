@@ -57,6 +57,7 @@ class CommLayer
 		std::vector<unsigned> reduce(const std::vector<unsigned>& v);
 		std::vector<long unsigned> reduce(
 				const std::vector<long unsigned>& v);
+		std::vector<long long unsigned> reduce(const std::vector<long long unsigned>& v);
 
 		// Send a control message
 		void sendControlMessage(APControl m, int argument = 0);
