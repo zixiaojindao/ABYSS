@@ -5,15 +5,15 @@
 #include <vector>
 
 namespace opt {
-	extern unsigned kmerSize;
-	extern unsigned kMin;
-	extern unsigned kMax;
-	extern unsigned kStep;
+	extern int kmerSize;
+	extern int kMin;
+	extern int kMax;
+	extern int kStep;
 	extern unsigned erode;
 	extern unsigned erodeStrand;
-	extern unsigned trimLen;
+	extern int trimLen;
 	extern float coverage;
-	extern unsigned bubbleLen;
+	extern int bubbleLen;
 	extern std::string coverageHistPath;
 	extern std::string contigsPath;
 	extern std::string contigsTempPath;

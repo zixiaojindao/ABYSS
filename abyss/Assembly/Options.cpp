@@ -65,16 +65,16 @@ static const char USAGE_MESSAGE[] =
 //modify kmerSize, kMin, kMax, kStep, trimLen, bubbleLen type from int to unsigned by Sun Zhao(zixiaojindao@gmail.com)
 /** k-mer length */
 //int kmerSize = -1;
-unsigned kmerSize = (unsigned)-1;
+int kmerSize = -1;
 int k; // used by Graph
 
 /** k-mer range */
 //int kMin = -1;
 //int kMax = -1;
 //int kStep = 1;
-unsigned kMin = (unsigned)-1;
-unsigned kMax = (unsigned)-1;
-unsigned kStep = (unsigned)1;
+int kMin = -1;
+int kMax = -1;
+int kStep = 1;
 
 /** erosion coverage */
 unsigned erode = (unsigned)-1;
@@ -84,14 +84,14 @@ unsigned erodeStrand = (unsigned)-1;
 
 /** trim length */
 //int trimLen = -1;
-unsigned trimLen = (unsigned)-1;
+int trimLen = -1;
 
 /** Coverage cutoff. */
 float coverage = -1;
 
 /** Pop bubbles shorter than N bp. */
 //int bubbleLen = -1;
-unsigned bubbleLen = (unsigned)-1;
+int bubbleLen = -1;
 
 /** coverage histogram path */
 string coverageHistPath;

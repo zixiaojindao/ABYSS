@@ -40,13 +40,14 @@ void FastaWriter::WriteSequence(const Sequence& seq, unsigned id,
 {
 	assert(m_fileHandle != NULL);
 	const char *sep = comment.empty() ? "" : " ";
+	//change %llu %zu to %llu %u by Sun Zhao(zixiaojindao@gmail.com)
 	int n = opt::rank < 0
-		? fprintf(m_fileHandle, ">%llu %zu %u%s%s\n%s\n",
+		? fprintf(m_fileHandle, ">%llu %u %u%s%s\n%s\n",
 				(long long unsigned)id,
 				seq.length(), multiplicity,
 				sep, comment.c_str(),
 				seq.c_str())
-		: fprintf(m_fileHandle, ">%u:%llu %zu %u%s%s\n%s\n",
+		: fprintf(m_fileHandle, ">%u:%llu %u %u%s%s\n%s\n",
 				opt::rank,
 				(long long unsigned)id,
 				seq.length(), multiplicity,
