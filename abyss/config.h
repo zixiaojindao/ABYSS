@@ -48,7 +48,7 @@
 #define HAVE_INTTYPES_H 1
 
 /* Define to 1 if you have the `dl' library (-ldl). */
-#define HAVE_LIBDL 0 
+#define HAVE_LIBDL 0
 
 /* Define to 1 if you have the `lam' library (-llam). */
 /* #undef HAVE_LIBLAM */
@@ -60,7 +60,7 @@
 #define HAVE_LIBM 1
 
 /* Define to 1 if you have the `mpi' library (-lmpi). */
-/* #undef HAVE_LIBMPI */
+#define HAVE_LIBMPI 1
 
 /* Define to 1 if you have the `mpich' library (-lmpich). */
 /* #undef HAVE_LIBMPICH */
@@ -82,7 +82,7 @@
 #define HAVE_MEMSET 1
 
 /* Define to 1 if you have the <mpi.h> header file. */
-/* #undef HAVE_MPI_H */
+#define HAVE_MPI_H 1
 
 /* Define to 1 if you have the `pow' function. */
 #define HAVE_POW 1
@@ -134,13 +134,14 @@
 #define HAVE_SYS_TYPES_H 1
 
 /* Define to 1 if you have the <tr1/unordered_map> header file. */
-#define HAVE_UNORDERED_MAP 1
+//#define HAVE_TR1_UNORDERED_MAP 1
 
 /* Define to 1 if you have the <unistd.h> header file. */
 #define HAVE_UNISTD_H 1
 
 /* Define to 1 if you have the <unordered_map> header file. */
 /* #undef HAVE_UNORDERED_MAP */
+#define HAVE_UNORDERED_MAP 1
 
 /* Define to 1 if you have the `vfork' function. */
 #define HAVE_VFORK 1
@@ -281,7 +282,6 @@
 
 /* Define as `fork' if `vfork' does not work. */
 /* #undef vfork */
-
 
 /* for windows port*/
 typedef int     ssize_t;

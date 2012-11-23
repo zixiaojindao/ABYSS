@@ -115,7 +115,7 @@ int main(int argc, char* const* argv)
 	Timer timer("Total");
 
 	// Set stdout to be line buffered.
-	setvbuf(stdout, NULL, _IOLBF, 0);
+	setvbuf(stdout, NULL, _IOLBF, 1024);
 
 	opt::parse(argc, argv);
 
