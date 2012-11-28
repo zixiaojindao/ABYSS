@@ -33,3 +33,9 @@ if (k > opt::kMin) {
 opt::bubbleLen[3*k], 但是PopBubbles中却是opt::maxLength[10000]
 
 8.ABYSS -a option传给了PathConsensus，但是PathConsensus并不需要-a参数？
+
+9.FMindex.h Match findSuffix(It first, It last, MemoIt memoIt) const中
+for (it = last - 1; it >= first && !sai.empty(); --it) {
+it==first的时候 --it是不合法的。
+debug版检查，而release版不检查，可以改变参数为string的rbegin和rend。
+目前还没有改。

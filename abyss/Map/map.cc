@@ -301,7 +301,8 @@ static void buildFMIndex(FMIndex& fm, const char* path)
 /** Return the size of the specified file. */
 static streampos fileSize(const string& path)
 {
-	std::ifstream in(path.c_str());
+	//add ios::binary by Sun Zhao(zixiaojindao@gmail.com)
+	std::ifstream in(path.c_str(), ios::binary);
 	assert_good(in, path);
 	in.seekg(0, std::ios::end);
 	assert_good(in, path);

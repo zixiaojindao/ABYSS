@@ -83,7 +83,8 @@ static inline std::istream& operator>>(std::istream& in, Ignore o)
 template <typename Vector>
 static inline void readFile(const char* path, Vector& s)
 {
-	std::ifstream in(path);
+	//add ios::binary by Sun Zhao(zixiaojindao@gmail.com)
+	std::ifstream in(path, ios::binary);
 	assert_good(in, path);
 	in.seekg(0, std::ios::end);
 	ssize_t n = in.tellg();

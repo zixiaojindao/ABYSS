@@ -75,7 +75,8 @@ class FastaIndex
 	void index(const std::string& path)
 	{
 		m_data.clear();
-		std::ifstream in(path.c_str());
+		//add ios::binary by Sun Zhao(zixiaojindao@gmail.com)
+		std::ifstream in(path.c_str(), std::ios::binary);
 		assert_good(in, path);
 		char c;
 		for (std::string id;
