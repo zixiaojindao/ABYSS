@@ -64,7 +64,8 @@ class FastaIndex
 	size_t fileSize() const
 	{
 		assert(!m_data.empty());
-		return m_data.back().offset + m_data.back().size + 1;
+		//replace + 1 with + 2 by Sun Zhao(zixiaojindao@gmail.com)
+		return m_data.back().offset + m_data.back().size + 2;
 	}
 
 	typedef Data::const_iterator const_iterator;
@@ -88,7 +89,8 @@ class FastaIndex
 			in >> Ignore('\n');
 			size_t n = in.gcount();
 			assert(n > 0);
-			m_data.push_back(FAIRecord(offset, n - 1, id));
+			//replace n -1 with n - 2 by Sun Zhao(zixiaojindao@gmail.com)
+			m_data.push_back(FAIRecord(offset, n - 2, id));
 		}
 		assert(in.eof());
 	}
