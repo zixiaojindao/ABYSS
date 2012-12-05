@@ -100,6 +100,19 @@ int CommLayer::receiveBroadcast()
 	return message;
 }
 
+void MySum(void * in_, void * inout_, int * len, MPI_Datatype * dptr)
+{
+	unsigned long long * in = (unsigned long long *)in_;
+	unsigned long long * inout = (unsigned long long*)inout_;
+	for (int i=0; i<*len; ++i)
+	{
+		*inout = (*in) + (*inout);
+		in++;
+		inout++;
+	}
+}
+
+
 /** Block until all processes have reached this routine.
  * @return the sum of count from all processors
  */
@@ -107,7 +120,9 @@ long long unsigned CommLayer::reduce(long long unsigned count)
 {
 	logger(4) << "entering reduce: " << count << '\n';
 	long long unsigned sum;
-	MPI_Allreduce(&count, &sum, 1, MPI_UNSIGNED_LONG_LONG, MPI_SUM,
+	MPI_Op mysum;
+	MPI_Op_create(MySum, true, &mysum);
+	MPI_Allreduce(&count, &sum, 1, MPI_UNSIGNED_LONG_LONG, mysum,
 			MPI_COMM_WORLD);
 	logger(4) << "left reduce: " << sum << '\n';
 	return sum;
@@ -138,12 +153,15 @@ vector<long unsigned> CommLayer::reduce(
 	return sum;
 }
 
-vector<long long unsigned> CommLayer::reduce(const vector<long long unsigned>& v)
+/** Reduce the specified vector added by Sun Zhao(zixiaojindao@gmail.com)**/
+vector<unsigned long long> CommLayer::reduce(const vector<unsigned long long>& v)
 {
 	logger(4) << "entering reduce\n";
-	vector<long long unsigned> sum(v.size());
-	MPI_Allreduce(const_cast<long long unsigned*>(&v[0]),
-			&sum[0], v.size(), MPI_UNSIGNED_LONG, MPI_SUM,
+	vector<unsigned long long> sum(v.size());
+	MPI_Op mysum;
+	MPI_Op_create(MySum, true, &mysum);
+	MPI_Allreduce(const_cast<unsigned long long*>(&v[0]),
+			&sum[0], v.size(), MPI_UNSIGNED_LONG_LONG, mysum,
 			MPI_COMM_WORLD);
 	logger(4) << "left reduce\n";
 	return sum;

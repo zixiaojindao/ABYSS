@@ -69,7 +69,8 @@ int main(int argc, char** argv)
 	Timer timer("Total");
 
 	// Set stdout to be line buffered.
-	setvbuf(stdout, NULL, _IOLBF, 0);
+	//replace 0 with 1024 by Sun Zhao(zixiaojindao@gmail.com)
+	setvbuf(stdout, NULL, _IOLBF, 1024);
 
 	MPI_Init(&argc,&argv);
 	MPI_Comm_rank(MPI_COMM_WORLD, &opt::rank);
