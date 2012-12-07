@@ -44,17 +44,20 @@ static void concatenateFiles(const string& dest,
 	cout << "Concatenating to " << dest << endl;
 	ostringstream s;
 	s << command;
+	//replace >'dest' with >dest  by Sun Zhao(zixiaojindao@gmail.com)
 	for (int i = 0; i < opt::numProc; i++)
 		s << ' ' << prefix << i << suffix;
-	s << " >'" << dest << '\'';
+	s << " >" << dest;
 	systemx(s.str());
 
 	bool die = false;
 	for (int i = 0; i < opt::numProc; i++) {
 		s.str("");
 		s << prefix << i << suffix;
-		const char* path = s.str().c_str();
-		if (unlink(path) == -1) {
+		//replace path type with string by Sun Zhao(zixiaojindao@gmail.com)
+		//const char* path = s.str().c_str();
+		string path = s.str();
+		if (unlink(path.c_str()) == -1) {
 			cerr << "error: removing `" << path << "': "
 				<< strerror(errno) << endl;
 			die = true;
@@ -97,9 +100,10 @@ int main(int argc, char** argv)
 	MPI_Barrier(MPI_COMM_WORLD);
 	MPI_Finalize();
 
+	//modify awk cmd to adapt win awk by Sun Zhao(zixiaojindao@gmail.com)
 	if (opt::rank == 0) {
 		concatenateFiles(opt::contigsPath, "contigs-", ".fa",
-				"awk '/^>/ { $1=\">\" i++ } { print }'");
+				"awk \"/^>/ { $1=\\\"\">\\\"\" i++ } { print }\"");
 		if (!opt::snpPath.empty())
 			concatenateFiles(opt::snpPath, "snp-", ".fa");
 		cout << "Done." << endl;
