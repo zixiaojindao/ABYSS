@@ -12,4 +12,4 @@ ABYSS uses boost as an external libary. When finishing git clone the source, ple
 [boost1.49]( http://downloads.sourceforge.net/project/boost/boost/1.49.0/boost_1_49_0.tar.bz2)
 and uncompress it in the src's root directory.
 
-More details, please refer to [https://github.com/sjackman/abyss]
+More details, please refer to (https://github.com/sjackman/abyss)
