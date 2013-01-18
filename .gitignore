@@ -24,7 +24,6 @@
 *.opensdf
 *.unsuccessfulbuild
 *.swp
-bin/
 x64/
 ipch/
 obj/
@@ -76,3 +75,4 @@ packages/
 temptest/
 test_reads.fa
 test-3.fa
+update.bat
